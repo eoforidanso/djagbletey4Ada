@@ -1,0 +1,210 @@
+# DJAGBLETEY — Frank Quarshie for Ada
+
+Campaign site for **Frank Quarshie Djagbletey**, Ada Constituency, Greater Accra Region, Ghana.
+*Return · Rebuild · Represent · …Kakepami!*
+
+Static site — three files, no build step, no backend, no dependencies to install.
+Works from any web host, or from a USB stick.
+
+```
+index.html    structure and copy
+styles.css    design system (deep aubergine + Songor gold, glassmorphism)
+app.js        all content + interactivity — THIS IS THE FILE YOU EDIT
+images/       candidate photography and the campaign seal
+```
+
+---
+
+## Run it locally
+
+```bash
+cd frank-quarshie-ada && python3 -m http.server 4173
+```
+
+Then open <http://localhost:4173>.
+
+> Open `index.html` by double-clicking and the interactive parts will not run — browsers
+> block scripts on `file://`. Always serve it over HTTP, as above.
+
+---
+
+## ⚠️ Before this goes live — five things to fill in
+
+Everything below lives in the `CAMPAIGN` block at the top of **`app.js`**.
+
+| What | Current value | Action |
+|---|---|---|
+| WhatsApp number | `233000000000` | **Required.** Digits only, no `+`, no spaces. e.g. `233241234567` |
+| Email | `campaign@example.org` | Replace with the real campaign address |
+| Phone | `+233 XX XXX XXXX` | Replace with the office line |
+| Socials | all `url: ''` | Paste each full profile URL — see below |
+| Pledge seed | `1284` | Starting number for the public counter. Set it honestly. |
+
+Until the WhatsApp number is set, every "send" button opens a chat to a non-existent number.
+
+### Social links
+
+Six accounts are wired with proper brand icons: **WhatsApp Channel, Facebook, TikTok,
+Instagram, X and YouTube**. They appear as an icon row in the footer, and as labelled rows
+in the "Follow the campaign" panel in the Join section.
+
+Edit the `socials` array at the top of `app.js` — paste the full URL into `url`:
+
+```js
+{ name:'Facebook', icon:'facebook', url:'https://facebook.com/YOUR-PAGE', handle:'' },
+```
+
+- An account with a **URL renders as a live link** (opens in a new tab, `rel="noopener"`).
+- An account with an **empty URL renders greyed-out and dashed, as a plain `<span>`** —
+  visible to you as a to-do, but genuinely unclickable, so the site can never ship
+  pointing at the wrong account. The console also lists which ones are still unset.
+- The labelled panel in the Join section **only shows live accounts**, and removes itself
+  entirely if none are configured — so it never renders as an empty box.
+- **Delete rows you don't use**, and reorder them to change the display order. For Ada,
+  WhatsApp and Facebook are deliberately first.
+- `handle` is optional secondary text for the labelled rows (e.g. "Daily campaign updates").
+
+I did not guess any URLs. Inventing plausible-looking handles risks linking to a real
+account belonging to someone else, so every row ships empty for you to fill in.
+
+---
+
+## The interactive features
+
+**Countdown** — to 7 December 2028, Ghana's next general election. If the EC sets a
+different date, change `electionDate`. It swaps to an "election day is here" message
+automatically when the date passes.
+
+**Set your own mandate** — visitors pick their top three issues from ten. The site builds
+a ranked mandate card and sends it to the campaign over WhatsApp. This is the site's real
+organising asset: it tells you what each community actually cares about, in their own
+ranking, with a phone number attached. Issues are defined in the `ISSUES` array.
+
+**Community finder** — searchable list of 18 communities, linked two-way with a stylised
+map of the Songor lagoon, the Volta channel and the coast. Clicking either the list or a
+map pin selects the community and pre-fills it on the pledge form.
+
+**Voter readiness checklists** — three checklists (register, verify, bring others).
+Progress saves to the visitor's own device only; nothing is transmitted.
+
+**Pledge form → WhatsApp** — composes a formatted message with the supporter's name,
+phone, community, chosen role, ranked priorities and free-text comment. It *opens*
+WhatsApp with the message ready; the supporter still presses send themselves. No data
+is stored on the website.
+
+**Share card** — generates a personalised "I STAND WITH ADA" image on a canvas, with the
+supporter's name, community and ranked priorities. Downloads as PNG, or uses the native
+share sheet on phones. Built for WhatsApp status and Facebook.
+
+---
+
+## Content that needs verifying before print
+
+I wrote the policy sections around Ada's genuine, well-documented issues — the Songor
+lagoon and community salt-winning rights, coastal erosion at Totope and Azizanya, the
+estuary fishery, Asafotufiami and tourism, youth migration to Accra, water and roads.
+The framing is campaign copy, not sourced reporting. Two specific things to check:
+
+1. **The community list** (`COMMUNITIES` in `app.js`) is a plausible list of Ada-area
+   towns and villages. **Check it against the Electoral Commission's official electoral-area
+   list** before you print anything or claim coverage. Names, spellings and boundaries
+   matter here, and getting a community's name wrong is the kind of thing opponents use.
+
+2. **The biography** in "The Candidate" is deliberately thin — it makes claims about
+   returning to Ada and about the family name, and nothing else. I had no biographical
+   material to work from, so I did not invent a career history, qualifications, or record
+   of service. Replace that section with Mr. Quarshie's actual background before launch.
+
+The map is explicitly captioned as a stylised orientation drawing, not to scale. Do not
+present it as a constituency boundary map.
+
+---
+
+## Design notes
+
+- **Deep aubergine + gold** taken from the campaign seal; Ghana's red-gold-green appears
+  as a restrained accent rather than a theme.
+- **Glassmorphism** via `backdrop-filter` with specular top edges on every panel, over a
+  soft aurora field. Degrades to flat translucent panels on older browsers.
+
+- **Light sections break up the dark.** "The Candidate" and "Be ready" are `.sec-light` —
+  soft beige/paper blocks with a wide shallow arc top and bottom (the curved cut between
+  sections). Because every component reads its colours from custom properties, that one
+  class re-declares the tokens and re-themes everything inside it — no component-level
+  overrides. Note gold **darkens to `#8a6414`** inside light sections; the bright gold is
+  illegible on beige. To make another section light, just add `class="sec-light"`.
+
+- **The portrait** is an arch (`border-radius: 999px 999px 36px 36px`) with a hairline gold
+  outline, a concentric gold ring, a blurred purple/gold aura behind the subject, and a
+  deep soft drop shadow — so it sits *in* the layout rather than on top of it. A curved
+  translucent panel behind the right column forms the diagonal/curved break from the
+  left-hand copy.
+
+- **Image cropping is deliberate — don't centre it.** The studio portraits have only
+  **6–10% headroom above the head** in the source. A default centred `object-fit: cover`
+  crop slices the top of the head off. Every cropped image therefore carries an explicit
+  top-biased `object-position` (hero 16%, candidate 8%, gallery 15%), leaving 5.4–10.3%
+  headroom. The arch also curves inward at the sides, so the hero needs more bias than the
+  rectangular crop alone would suggest — current clearance is 25px.
+  **If you swap in a new photo, re-check its headroom rather than assuming these values carry over.**
+  The poster is `object-fit: contain`, not cover — it's a designed graphic, and cropping it
+  cut 55% of its width.
+
+- **Hierarchy**: the headline runs at a **6.1:1 size ratio** to the paragraph beneath it,
+  so the eye lands on the slogan first. Section padding is `clamp(96px, 12vw, 184px)`;
+  light sections get more still. Hero vertical rhythm is tuned so the primary CTA stays
+  above the fold on a 900px-tall viewport — **if you enlarge the headline further, re-check
+  that**, because the countdown and buttons are what get pushed off.
+
+- **Contrast is audited, not eyeballed.** Every secondary text colour clears WCAG AA:
+  the darkest is 5.15:1 (citation on paper), most sit at 5.6–7.7:1. `--muted-2` was
+  lifted from .42 → .52 on dark and set to .62 on light to get there. If you dim these
+  tokens for aesthetics, you will drop below AA.
+- **Type — two voices.** The system is deliberate about which typeface speaks when:
+
+  | Role | Face | Used for |
+  |---|---|---|
+  | **Statement** | Playfair Display 900 | The slogan, all section headings (`h2`), the pull quote (italic), the small-caps kicker |
+  | **Information** | Plus Jakarta Sans | Card titles (`h3`), nav, buttons, eyebrows, stat numerals |
+  | **Reading** | Inter | All body copy |
+
+  Card titles stay sans on purpose — they're labels you scan, not statements you hear.
+  Mixing serif into them would flatten the distinction and make the serif read as
+  decoration rather than voice.
+
+  Line spacing was opened up throughout for readability: body 1.65 → **1.78**, lede
+  1.7 → **1.82**, pillar copy 1.62 → **1.76**, bullet lists 1.5 → **1.66**.
+
+  Two details worth knowing if you edit the slogan: the hero lines sit inside
+  `overflow:hidden` masks for the slide-up animation, so `.l` carries a
+  `padding-bottom`/negative-margin pair to stop Playfair's descenders (the "p" in
+  *Represent*) being clipped. And the gold kicker uses `font-variant-caps:all-small-caps`
+  with an uppercase `@supports` fallback, tightened at ≤560px so it holds one line on a
+  375px phone.
+
+  All three families load from Google Fonts with full system fallbacks. For a site serving
+  rural Ghana on patchy mobile data, **self-hosting these is worth doing** — it removes an
+  external round trip, and Playfair 900 is the heaviest single asset after the photos.
+- Respects `prefers-reduced-motion`. No horizontal overflow at any width from 320px up.
+
+### Responsive breakpoints
+
+| Width | Behaviour |
+|---|---|
+| ≤1080px | Stats and pillars drop to 2 columns; readiness cards to 1 |
+| **≤900px** | Hero portrait stacks **under** the slogan. Nav collapses to a burger menu with 57px tap targets and a gold "Join the campaign" CTA inside the panel. All two-column sections go single-column; the sticky mandate card unsticks. |
+| **≤560px** | Shell goes full-bleed with **22px gutters** (was 15px) — text now sits 48px from the screen edge. **All buttons go full-width** and hero actions stack vertically. Card padding 30/26. Decorative eyebrow rule hidden so wrapped labels stay flush left. |
+| ≤360px | Gutters tighten to 18px and card padding to 26/22 for small handsets |
+
+Buttons deliberately go full-width only below 560px — a full-bleed button on a 768px
+tablet looks broken, so tablets keep auto-width buttons with the collapsed nav.
+- Total page weight is dominated by the six photographs (~690 KB). Compressing those to
+  WebP would roughly halve the load — worth doing before a data-cost-sensitive launch.
+
+---
+
+## Deploying
+
+Any static host works — Netlify, Vercel, GitHub Pages, cPanel. Drag the folder in.
+There is nothing to build and no server-side code, so there is no database to secure and
+no supporter data sitting on a server to leak.
