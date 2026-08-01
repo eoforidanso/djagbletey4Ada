@@ -137,6 +137,14 @@ h2{ font-size:clamp(34px,5vw,60px); line-height:1.14; letter-spacing:-.03em; col
 h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; }
 .lede{ font-size:clamp(17px,1.7vw,20px); color:var(--muted); max-width:62ch; line-height:1.82; }
 
+/* Inline text link — underlined, because a colour change alone is not an
+   affordance for anyone who can't distinguish it from the body copy. */
+.inline-link{
+  color:var(--green-deep); font-weight:700; white-space:nowrap;
+  border-bottom:1px solid rgba(0,107,63,.4); transition:color .3s, border-color .3s;
+}
+.inline-link:hover{ color:var(--red-lit); border-color:var(--red-lit); }
+
 /* ---------- Glass primitives ---------- */
 .glass{
   background:var(--glass);
@@ -633,6 +641,77 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .pillar ul{ margin:18px 0 0; padding:0; list-style:none; }
 .pillar li{ font-size:13.5px; color:var(--muted-2); padding:9px 0 9px 20px; position:relative; line-height:1.66; border-top:1px solid rgba(10,11,11,.09); }
 .pillar li::before{ content:""; position:absolute; left:2px; top:17px; width:5px; height:5px; border-radius:50%; background:var(--red); }
+
+/* ============================================================
+   ACCOUNTABILITY TRACKER ("Hold me to it")
+   The Charter claims to be "written to be checked" — this is the
+   checking. Deliberately plain: a ledger, not a dashboard. Anything
+   that looked like a progress bar or a percentage would imply
+   precision the campaign cannot honestly claim.
+   ============================================================ */
+.pledge-card{
+  padding:26px 30px; border-radius:22px; position:relative;
+  margin-bottom:28px; max-width:760px;
+}
+.pledge-card-rule{
+  position:absolute; left:0; top:22px; bottom:22px; width:3px; border-radius:3px;
+  background:linear-gradient(180deg,var(--green),var(--red));
+}
+.pledge-card p{ margin:0; font-size:15.5px; line-height:1.7; color:var(--muted); }
+.pledge-card b{ color:var(--green-deep); font-family:var(--ff-display); font-weight:700; }
+
+.track{ display:flex; flex-direction:column; }
+.track-row{
+  display:flex; align-items:center; gap:18px;
+  padding:20px 4px;
+  border-top:1px solid rgba(10,11,11,.12);
+}
+.track-row:last-child{ border-bottom:1px solid rgba(10,11,11,.12); }
+.track-no{
+  flex:none; font-family:var(--ff-display); font-weight:800; font-size:13px;
+  letter-spacing:.1em; color:var(--red-lit); min-width:26px;
+}
+.track-main{ flex:1; min-width:0; }
+.track-main b{
+  display:block; font-family:var(--ff-display); font-weight:700;
+  font-size:16.5px; letter-spacing:-.015em; color:var(--charcoal);
+}
+.track-main small{ display:block; margin-top:3px; font-size:13px; color:var(--muted-2); }
+
+/* Status chip. Colour is earned, not decorative: only a delivered
+   commitment gets green. "Not yet begun" stays neutral grey so an
+   untouched manifesto can never read as progress at a glance. */
+.track-state{
+  flex:none; font-family:var(--ff-display); font-weight:700; font-size:11.5px;
+  letter-spacing:.1em; text-transform:uppercase;
+  padding:7px 14px; border-radius:100px; white-space:nowrap;
+  background:rgba(10,11,11,.06); color:var(--muted-2);
+  border:1px solid rgba(10,11,11,.10);
+}
+[data-state="active"]  .track-state{ background:rgba(214,40,40,.10); color:var(--red-lit);   border-color:rgba(214,40,40,.28); }
+[data-state="done"]    .track-state{ background:rgba(0,107,63,.12);  color:var(--green-deep);border-color:rgba(0,107,63,.30); }
+[data-state="blocked"] .track-state{ background:rgba(10,11,11,.10);  color:var(--charcoal);  border-color:rgba(10,11,11,.24); }
+
+.track-ask{
+  flex:none; font-family:var(--ff-display); font-weight:700; font-size:13px;
+  color:var(--green-deep); padding:8px 4px;
+  border-bottom:1px solid rgba(0,107,63,.35);
+  transition:color .3s, border-color .3s;
+}
+.track-ask:hover{ color:var(--red-lit); border-color:var(--red-lit); }
+
+.track-note{
+  margin:22px 0 0; font-size:13px; color:var(--muted-2); font-style:italic;
+}
+
+@media (max-width:720px){
+  /* Stack: the row's four parts don't survive a phone width side by side. */
+  .track-row{ flex-wrap:wrap; gap:10px 14px; padding:18px 4px; }
+  .track-main{ flex:1 1 100%; order:2; }
+  .track-no{ order:1; }
+  .track-state{ order:1; margin-left:auto; }
+  .track-ask{ order:3; padding:6px 0; }
+}
 
 /* ============================================================
    PRIORITY RANKER (niche feature)

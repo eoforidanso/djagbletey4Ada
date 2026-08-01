@@ -81,6 +81,26 @@ a ranked mandate card and sends it to the campaign over WhatsApp. This is the si
 organising asset: it tells you what each community actually cares about, in their own
 ranking, with a phone number attached. Issues are defined in the `ISSUES` array.
 
+**"Hold me to it" — the accountability tracker.** The Charter calls itself *"written to
+be checked"*; this section is the checking. Every Charter commitment is listed with a
+public status, and each row has its own WhatsApp button that opens a message about *that
+specific commitment* — so a constituent can ask "where is the sea defence?" rather than
+sending a vague note about the manifesto.
+
+Maintain it in the **`CHARTER_STATUS`** array in `app.js`. Set each row's `state` to
+`pending` / `active` / `done` / `blocked`, and put a plain one-line explanation in `note`
+(a date, a stage, or the actual obstacle). Everything ships as `pending`, which is the
+honest state for a candidate whose term has not started.
+
+Two deliberate design decisions worth preserving:
+- **Nothing updates automatically.** There is no feed and no computed progress. A page
+  that could drift out of sync with reality on its own is worse than one that obviously
+  requires a human to touch it.
+- **Only `done` is green.** `pending` stays neutral grey rather than any colour that
+  might read as momentum, so a manifesto nobody has started cannot look like progress
+  to someone scanning quickly. There is deliberately no percentage or progress bar —
+  those imply a precision the campaign cannot honestly claim.
+
 **Community finder** — searchable list of 18 communities, linked two-way with a stylised
 map of the Songor lagoon, the Volta channel and the coast. Clicking either the list or a
 map pin selects the community and pre-fills it on the pledge form.
@@ -104,7 +124,7 @@ share sheet on phones. Built for WhatsApp status and Facebook.
 I wrote the policy sections around Ada's genuine, well-documented issues — the Songor
 lagoon and community salt-winning rights, coastal erosion at Totope and Azizanya, the
 estuary fishery, Asafotufiami and tourism, youth migration to Accra, water and roads.
-The framing is campaign copy, not sourced reporting. Two specific things to check:
+The framing is campaign copy, not sourced reporting. Three specific things to check:
 
 1. **The community list** (`COMMUNITIES` in `app.js`) is a plausible list of Ada-area
    towns and villages. **Check it against the Electoral Commission's official electoral-area
@@ -115,6 +135,13 @@ The framing is campaign copy, not sourced reporting. Two specific things to chec
    returning to Ada and about the family name, and nothing else. I had no biographical
    material to work from, so I did not invent a career history, qualifications, or record
    of service. Replace that section with Mr. Quarshie's actual background before launch.
+
+3. **"The reporting promise"** in the *Hold me to it* section commits the candidate, in
+   public, to reporting on every Charter commitment twice a year. **Mr. Quarshie has to
+   actually agree to that before it ships** — it is a promise written on his behalf, and
+   it is the kind an opponent will quote back if the page then goes stale. Either get his
+   sign-off and keep the page current, or soften the wording. A published accountability
+   page that stops being updated is worse than not having one.
 
 The map is explicitly captioned as a stylised orientation drawing, not to scale. Do not
 present it as a constituency boundary map.

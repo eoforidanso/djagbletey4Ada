@@ -72,6 +72,35 @@ const ISSUES = [
   { id:'farming', label:'Farming & irrigation',   note:'Inputs, markets and water for Ada farmers' }
 ];
 
+/* Charter accountability tracker — the "Hold me to it" section.
+   One row per Ada Charter commitment, in the same order as the Charter.
+
+   ▶ THIS IS THE PART YOU MAINTAIN BY HAND. Change `state` as things move
+     and the page re-renders itself. Nothing here updates automatically —
+     that is deliberate, so the page can never overstate progress.
+
+   state:  'pending'  — not begun (correct until the term starts)
+           'active'   — under way
+           'done'     — delivered
+           'blocked'  — stalled; say why in `note`
+   note:   optional one-line status shown under the title. Keep it plain
+           and specific: a date, a stage, or the actual obstacle. */
+const CHARTER_STATUS = [
+  { no:'01', title:'Songor: salt is a birthright', state:'pending', note:'' },
+  { no:'02', title:'Hold the shoreline',           state:'pending', note:'' },
+  { no:'03', title:'The estuary economy',          state:'pending', note:'' },
+  { no:'04', title:'Ada as a destination',         state:'pending', note:'' },
+  { no:'05', title:'Work for young Ada',           state:'pending', note:'' },
+  { no:'06', title:'The basics, done properly',    state:'pending', note:'' }
+];
+
+const CHARTER_STATE_LABEL = {
+  pending: 'Not yet begun',
+  active:  'In progress',
+  done:    'Delivered',
+  blocked: 'Stalled'
+};
+
 /* ============================================================
    Helpers
    ============================================================ */
@@ -227,6 +256,37 @@ setInterval(tick, 1000);
   const words = [...COMMUNITIES.map(c => c.name), 'Kakepami!', 'Return', 'Rebuild', 'Represent'];
   const line = () => `<span>${words.join('</span><span>')}</span>`;
   $('#ticker').innerHTML = line() + line();   // doubled for a seamless loop
+}
+
+/* ============================================================
+   Charter accountability tracker ("Hold me to it")
+   Renders CHARTER_STATUS. Every row carries its own WhatsApp link so a
+   constituent can ask about one specific commitment rather than the
+   manifesto in general — that specificity is the whole point.
+   Runs before the scroll-reveal observer below so the rows exist first.
+   ============================================================ */
+{
+  const el = $('#track');
+  if (el){
+    el.innerHTML = CHARTER_STATUS.map(c => {
+      const label = CHARTER_STATE_LABEL[c.state] || CHARTER_STATE_LABEL.pending;
+      const ask = waLink(
+        `Ada Charter — commitment ${c.no}, "${c.title}".\n\n` +
+        `Please can you tell me where this stands?`
+      );
+      return `
+        <div class="track-row" data-state="${c.state}">
+          <span class="track-no">${c.no}</span>
+          <div class="track-main">
+            <b>${c.title}</b>
+            ${c.note ? `<small>${c.note}</small>` : ''}
+          </div>
+          <span class="track-state">${label}</span>
+          <a class="track-ask" href="${ask}" target="_blank" rel="noopener"
+             aria-label="Ask about commitment ${c.no}: ${c.title}">Ask about this</a>
+        </div>`;
+    }).join('');
+  }
 }
 
 /* ============================================================
