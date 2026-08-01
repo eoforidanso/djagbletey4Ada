@@ -8,7 +8,7 @@ Works from any web host, or from a USB stick.
 
 ```
 index.html    structure and copy
-styles.css    design system (NDC black · red · white · green, glassmorphism)
+styles.css    design system (deep green / warm red / off-white / charcoal, glassmorphism)
 app.js        all content + interactivity — THIS IS THE FILE YOU EDIT
 images/       candidate photography and the campaign seal
 ```
@@ -123,34 +123,32 @@ present it as a constituency boundary map.
 
 ## Design notes
 
-- **All four NDC colours — black, red, white, green — carry weight.** Black is the
-  ground (`--black: #0a0b0b`), not a green-black. That matters: when green washed the
-  whole field it stopped reading as a party colour and just became "the background."
-  Against black, the green and red blooms (`.orb`) read as deliberate. Ghana's own
-  red-gold-green stripe (`.gh-stripe`) is kept separate and accurate — it is the
-  national flag, not the party's, and the two are not interchangeable.
+- **White is the page, everywhere, including the hero.** Off-white (`#F7F7F7`) is the
+  ground for every section. Only the footer and the thin ticker strip stay as
+  deliberate dark bookends (`--black: #0a0b0b`) — two small accents on an otherwise
+  white page, not a dark theme with white exceptions. Ghana's own red-gold-green
+  stripe (`.gh-stripe`) is kept separate and accurate from the NDC palette — it is
+  the national flag, not the party's, and the two are not interchangeable.
 
 - **The four-band motif** (`.ndc-band`) is black · red · white · green in the order they
   run down the party flag. It appears under the Charter heading and in the footer.
   The first band lifts to graphite on dark grounds, where true black would vanish.
 
-- **Glassmorphism** via `backdrop-filter` with specular top edges on every panel, over a
-  soft aurora field. Degrades to flat translucent panels on older browsers.
+- **Glassmorphism, adapted for a light page.** `backdrop-filter` blur was a dark-theme
+  trick — depth against a busy dark field. On white there's nothing to blur, so
+  `.glass` cards are solid white with a border and a soft shadow instead; the specular
+  top-edge highlight is switched off everywhere for the same reason.
 
-- **Light sections are the party's white.** "The Candidate" and "Be ready" are
-  `.sec-light` — near-white blocks with a wide shallow arc top and bottom (the curved cut
-  between sections). Because every component reads its colours from custom properties,
-  that one class re-declares the tokens and re-themes everything inside it — no
-  component-level overrides. Note red **darkens to `--red-deep`** inside light sections;
-  the bright red is illegible on white. To make another section light, add
-  `class="sec-light"`. These were warm beige until the palette audit — beige read as
-  "paper" rather than as one of the four party colours, and left cards barely separable
-  from the ground.
+- **`.sec-light` is a faint rhythm band, not "the light section."** Since white is now
+  the default everywhere, `.sec-light` ("The Candidate", "Be ready") just nudges the
+  background to a hair-darker off-white (`--ink-2`) for visual rhythm — it no longer
+  re-themes colours or cuts an arc between sections, because there's no colour
+  difference either side of it to justify one. To add another faint band, add
+  `class="sec-light"`.
 
-- **Vertical rhythm.** Section padding is `clamp(78px, 7.5vw, 116px)`. It was
+- **Vertical rhythm.** Section padding is `clamp(72px, 7vw, 108px)`. It was
   `clamp(96px, 12vw, 184px)`, which stacked 184 bottom + 184 top = **368px of empty
-  field between every section** at desktop — the page lost its thread between ideas.
-  If you raise it, check the gap between two adjacent dark sections, not just one.
+  space between every section** at desktop — the page lost its thread between ideas.
 
 - **The portrait** is an arch (`border-radius: 999px 999px 36px 36px`) with a hairline red
   outline, a concentric ring, a blurred green/red aura behind the subject, and a
@@ -169,40 +167,47 @@ present it as a constituency boundary map.
   cut 55% of its width.
 
 - **Hierarchy**: the headline runs at a **6.1:1 size ratio** to the paragraph beneath it,
-  so the eye lands on the slogan first. Section padding is `clamp(96px, 12vw, 184px)`;
-  light sections get more still. Hero vertical rhythm is tuned so the primary CTA stays
-  above the fold on a 900px-tall viewport — **if you enlarge the headline further, re-check
-  that**, because the countdown and buttons are what get pushed off.
+  so the eye lands on the slogan first. Hero vertical rhythm is tuned so the primary CTA
+  stays above the fold on a 900px-tall viewport — **if you enlarge the headline further,
+  re-check that**, because the countdown and buttons are what get pushed off.
 
-- **Contrast is audited, not eyeballed.** Every secondary text colour clears WCAG AA:
-  the darkest is 5.10:1 (small labels on white), most sit at 5.7–8.5:1. `--muted-2` was
-  lifted from .42 → .52 on dark and set to .62 on light to get there. If you dim these
-  tokens for aesthetics, you will drop below AA.
-- **Type — two voices.** The system is deliberate about which typeface speaks when:
+- **Contrast is audited, not eyeballed.** Every secondary text colour clears WCAG AA
+  against the refined palette (deep green `#006B3F`, warm red `#D62828`, off-white
+  `#F7F7F7`, charcoal `#1E1E1E`): the darkest sits at 5.2:1 (`--green-lit`, small
+  accents), most run 5.6–7.6:1. If you dim `--muted`/`--muted-2` for aesthetics, check
+  the ratio again before shipping — both are tuned right at the edge of comfortable.
+- **Type — a modern political-grade pairing.** Serif was demoted from "every heading"
+  to a genuine accent, used only where something is meant to sound spoken rather than
+  announced:
 
   | Role | Face | Used for |
   |---|---|---|
-  | **Statement** | Playfair Display 900 | The slogan, all section headings (`h2`), the pull quote (italic), the small-caps kicker |
-  | **Information** | Plus Jakarta Sans | Card titles (`h3`), nav, buttons, eyebrows, stat numerals |
-  | **Reading** | Inter | All body copy |
+  | **Accent (serif)** | Merriweather 700/900 | The hero slogan (`h1`), the pull quote (italic), the 3R restatement in the Candidate section |
+  | **Headings/UI** | Montserrat 600–800 | Section headings (`h2`), card titles (`h3`), nav, buttons, eyebrows, stat numerals |
+  | **Reading** | Lato | All body copy |
 
-  Card titles stay sans on purpose — they're labels you scan, not statements you hear.
-  Mixing serif into them would flatten the distinction and make the serif read as
-  decoration rather than voice.
+  Section headings moved off serif onto Montserrat deliberately — a confident sans
+  headline reads as "campaign site," where an all-serif page starts to read as
+  wedding invitation. Card titles (`h3`) were already sans and stay that way: they're
+  labels you scan, not statements you hear.
+
+  Merriweather doesn't ship an 800 weight, so anything serif that used to sit at 800
+  (`.cand-statement`) was dropped to 700 — the closest real cut, rather than letting
+  the browser synthesise a fake bold.
 
   Line spacing was opened up throughout for readability: body 1.65 → **1.78**, lede
   1.7 → **1.82**, pillar copy 1.62 → **1.76**, bullet lists 1.5 → **1.66**.
 
-  Two details worth knowing if you edit the slogan: the hero lines sit inside
+  One detail worth knowing if you edit the slogan: the hero lines sit inside
   `overflow:hidden` masks for the slide-up animation, so `.l` carries a
-  `padding-bottom`/negative-margin pair to stop Playfair's descenders (the "p" in
-  *Represent*) being clipped. And the red kicker uses `font-variant-caps:all-small-caps`
-  with an uppercase `@supports` fallback, tightened at ≤560px so it holds one line on a
+  `padding-bottom`/negative-margin pair to stop descenders (the "p" in *Represent*)
+  being clipped. The red kicker uses `font-variant-caps:all-small-caps` with an
+  uppercase `@supports` fallback, tightened at ≤560px so it holds one line on a
   375px phone.
 
-  All three families load from Google Fonts with full system fallbacks. For a site serving
-  rural Ghana on patchy mobile data, **self-hosting these is worth doing** — it removes an
-  external round trip, and Playfair 900 is the heaviest single asset after the photos.
+  All three families load from Google Fonts with full system fallbacks. For a site
+  serving rural Ghana on patchy mobile data, **self-hosting these is worth doing** —
+  it removes an external round trip.
 - Respects `prefers-reduced-motion`. No horizontal overflow at any width from 320px up.
 
 ### Responsive breakpoints

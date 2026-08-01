@@ -1,44 +1,40 @@
 /* ============================================================
    DJAGBLETEY — Frank Quarshie for Ada
-   Design system v3: white ground, green content, red action —
-   the customer's brief, matching the structure of johnmahama.org
-   (white page, green headings/nav, red reserved for CTAs and bands).
-
-   This inverts v2 (black ground, white as an occasional opt-in
-   section). Now white is the default surface everywhere; the hero
-   is the one deliberately colourful island, the same way the
-   reference site uses a green/red hero band against an otherwise
-   white page. See HERO below for the scoped dark-theme overrides
-   that used to be the global default.
+   Design system v4: refined palette + modern type pairing.
+   White ground, green content, red action stays the structure (v3,
+   matching johnmahama.org) — this pass swaps the exact colours and
+   fonts for a calmer, more premium set:
+     deep green #006B3F · warm red #D62828 · off-white #F7F7F7 · charcoal #1E1E1E
    ============================================================ */
 
 :root{
-  --black:      #0a0b0b;   /* party black — logo/footer only now, not the ground */
+  --black:      #0a0b0b;   /* party black — logo/footer/ticker bands, not text */
   --black-2:    #111314;
   --white:      #ffffff;
 
-  --ink:        #ffffff;   /* body ground is now white (name kept for existing refs) */
-  --ink-2:      #f3f5f3;
-  --green-deep: #0a3d22;   /* deep party green — headings darken to this on white */
-  --green:      #0f7a3d;   /* base party green — the site's primary content colour */
-  --green-lit:  #0d6f38;   /* green as it reads on white — 6.3:1, clears AA with margin */
-  --red:        #d21f1f;   /* base NDC red — reserved for CTAs and accent bands */
+  --ink:        #f7f7f7;   /* off-white body ground, not stark white (name kept for existing refs) */
+  --ink-2:      #eeeeee;
+  --green-deep: #006b3f;   /* deep party green — headings, 6.2:1 on off-white */
+  --green:      #006b3f;   /* base party green — the site's primary content colour */
+  --green-lit:  #087846;   /* a touch brighter for small accents, 5.2:1 on off-white */
+  --red:        #d62828;   /* warm NDC red — reserved for CTAs and accent bands */
   /* --red-lit is the eyebrow/label/stat-number colour used everywhere, so its
-     default must be legible on WHITE now — the bright #ff5b4a only comes back
-     inside .hero/.ticker/.footer, which re-declare it for their dark ground. */
-  --red-lit:    #a11616;
-  --red-deep:   #a11616;   /* red as it reads on white — darkened off the base for contrast */
+     default must be legible on off-white — the bright #e05e5e only comes back
+     inside .ticker/.footer, which re-declare it for their dark ground. */
+  --red-lit:    #a01e1e;
+  --red-deep:   #a01e1e;   /* red as it reads on off-white — darkened off the base for contrast */
 
   /* Ghana flag — kept accurate to the flag itself, independent of party colour */
   --gh-red:     #ce1126;
   --gh-gold:    #fcd116;
   --gh-green:   #006b3f;
 
-  /* Neutrals — body text on white */
+  /* Neutrals — charcoal text on off-white */
+  --charcoal:   #1e1e1e;
   --paper:      #fbf9f6;
   --paper-dim:  #eef0ee;
-  --muted:      rgba(10,11,11,.72);      /* ~9.8:1 on white */
-  --muted-2:    rgba(10,11,11,.60);      /* ~7.2:1 on white */
+  --muted:      rgba(30,30,30,.72);      /* 6.3:1 on off-white */
+  --muted-2:    rgba(30,30,30,.68);      /* 5.6:1 on off-white */
 
   /* Cards — solid white, lifted with shadow rather than translucent glass.
      Backdrop-blur "frosted glass" is a dark-theme trick: it reads as depth
@@ -54,12 +50,13 @@
   --ease: cubic-bezier(.16,1,.3,1);
   --ease-io: cubic-bezier(.65,0,.35,1);
 
-  /* Type — two voices:
-     serif  = statement (slogan, section headings, pull quote)
-     sans   = information (UI, card titles, body, numerals) */
-  --ff-serif:   "Playfair Display", Georgia, "Times New Roman", serif;
-  --ff-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --ff-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Type — modern political-grade pairing:
+     serif (accent) = the slogan and pull quotes only, not section headings
+     display (headings/UI) = Montserrat, everywhere a heading or label sits
+     body = Lato, all reading copy */
+  --ff-serif:   "Merriweather", Georgia, "Times New Roman", serif;
+  --ff-display: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ff-body: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   --shell: min(1180px, 92vw);
   --nav-h: 72px;
@@ -71,8 +68,8 @@ html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 
 body{
   margin:0;
-  background:#ffffff;
-  color:#0a0b0b;
+  background:#f7f7f7;
+  color:#1e1e1e;
   font-family:var(--ff-body);
   font-size:17px;
   line-height:1.78;
@@ -104,7 +101,7 @@ section{ position:relative; z-index:2; padding:clamp(72px,7vw,108px) 0; }
    a floating capsule shape with no reason to exist.
    ============================================================ */
 .sec-light{
-  background:var(--ink-2);   /* #f3f5f3 — a hair off white, not a colour statement */
+  background:var(--ink-2);   /* #eeeeee — a hair off the page's own off-white */
 }
 /* Cards still lift off the tint with a real shadow. */
 .sec-light .glass{
@@ -122,18 +119,20 @@ section{ position:relative; z-index:2; padding:clamp(72px,7vw,108px) 0; }
 
 h1,h2,h3,h4{ font-family:var(--ff-display); font-weight:800; letter-spacing:-.035em; line-height:1.03; margin:0; }
 
-/* Serif carries the campaign's voice */
-h1,h2,.cand blockquote{
+/* Serif is the accent voice now — the slogan (h1) and pull quotes only.
+   Section headings (h2) moved to the sans display face: modern political
+   sites lead with a confident sans headline and save serif for the one or
+   two moments meant to sound spoken rather than announced. */
+h1,.cand blockquote{
   font-family:var(--ff-serif);
   font-weight:900;
   letter-spacing:-.02em;   /* serif needs far less negative tracking than the sans */
 }
-/* Section headings are green by default now — the site's primary content
+/* Section headings are green by default — the site's primary content
    colour, same role green plays on the reference site. Card titles (h3)
    stay near-black: they're information you scan, not a section statement,
-   and an all-green page stops reading as a deliberate choice. The hero's
-   h1 overrides back to white — see HERO. */
-h2{ font-size:clamp(34px,5vw,60px); line-height:1.14; color:var(--green-deep); }
+   and an all-green page stops reading as a deliberate choice. */
+h2{ font-size:clamp(34px,5vw,60px); line-height:1.14; letter-spacing:-.03em; color:var(--green-deep); }
 /* Sans stays on card titles — they're information, not statement */
 h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; }
 .lede{ font-size:clamp(17px,1.7vw,20px); color:var(--muted); max-width:62ch; line-height:1.82; }
@@ -177,14 +176,14 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   transition:transform .85s var(--ease);
 }
 .btn:hover::after{ transform:translateX(101%); }
-.btn-outline::after{ background:linear-gradient(100deg,transparent,rgba(255,91,74,.28),transparent); }
+.btn-outline::after{ background:linear-gradient(100deg,transparent,rgba(224,94,94,.28),transparent); }
 .btn:active{ transform:scale(.97); }
 .btn-red{
   background:linear-gradient(160deg,var(--red) 0%,var(--red-deep) 100%);
   color:#fff;
-  box-shadow:0 10px 34px -10px rgba(210,31,31,.75), 0 1px 0 rgba(255,255,255,.5) inset;
+  box-shadow:0 10px 34px -10px rgba(214,40,40,.75), 0 1px 0 rgba(255,255,255,.5) inset;
 }
-.btn-red:hover{ transform:translateY(-2px); box-shadow:0 18px 46px -12px rgba(210,31,31,.9), 0 1px 0 rgba(255,255,255,.6) inset; }
+.btn-red:hover{ transform:translateY(-2px); box-shadow:0 18px 46px -12px rgba(214,40,40,.9), 0 1px 0 rgba(255,255,255,.6) inset; }
 .btn-glass{
   background:var(--glass-strong); border-color:var(--glass-line-2); color:#fff;
   backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
@@ -218,7 +217,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 }
 .cta-note::before{
   content:""; flex:none; width:6px; height:6px; border-radius:50%;
-  background:var(--red); box-shadow:0 0 12px rgba(210,31,31,.9);
+  background:var(--red); box-shadow:0 0 12px rgba(214,40,40,.9);
 }
 
 /* ---------- NDC four-band ----------
@@ -285,7 +284,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   box-shadow:0 18px 50px -22px rgba(10,11,11,.28), 0 1px 0 rgba(255,255,255,.6) inset;
 }
 .nav-brand{ display:flex; align-items:center; gap:11px; margin-right:auto; }
-.nav-brand img{ width:34px; height:34px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 1px rgba(210,31,31,.6), 0 4px 14px rgba(10,11,11,.25); }
+.nav-brand img{ width:34px; height:34px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 1px rgba(214,40,40,.6), 0 4px 14px rgba(10,11,11,.25); }
 .nav-brand b{ font-family:var(--ff-display); font-weight:800; font-size:15.5px; letter-spacing:.01em; color:var(--green-deep); }
 .nav-brand span{ display:block; font-size:10px; letter-spacing:.19em; text-transform:uppercase; color:var(--red-lit); font-weight:600; }
 .nav-links{ display:flex; gap:4px; }
@@ -293,14 +292,18 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   padding:9px 15px; border-radius:100px; font-size:14px; font-weight:600;
   color:var(--green-deep); transition:color .3s, background .3s;
 }
-.nav-links a:hover{ color:var(--green); background:rgba(15,122,61,.08); }
-.nav-links a.active{ color:var(--green); background:rgba(15,122,61,.10); }
+.nav-links a:hover{ color:var(--green); background:rgba(0,107,63,.08); }
+.nav-links a.active{ color:var(--green); background:rgba(0,107,63,.10); }
 .nav-links a.active::after{
   content:""; display:block; margin:5px auto 0; width:14px; height:2px; border-radius:2px;
   background:linear-gradient(90deg,var(--red),var(--red-lit));
 }
 .nav-links .m-cta{ display:none; }   /* mobile-menu CTA — revealed under 900px */
 .nav-cta{ padding:11px 22px; font-size:14px; }
+/* Secondary to the red "Join the Movement" CTA — outline, smaller, so the
+   red button still clearly leads. Hidden under 900px along with nav-cta;
+   the mobile dropdown's own CTA and the footer's "Donate" link cover it. */
+.nav-donate{ padding:11px 20px; font-size:14px; }
 .nav-burger{ display:none; width:42px; height:42px; border-radius:50%; background:rgba(10,11,11,.06); border:1px solid rgba(10,11,11,.14); cursor:pointer; align-items:center; justify-content:center; }
 .nav-burger i{ display:block; width:16px; height:1.5px; background:var(--green-deep); position:relative; transition:.4s var(--ease); }
 .nav-burger i::before,.nav-burger i::after{ content:""; position:absolute; left:0; width:16px; height:1.5px; background:var(--green-deep); transition:.4s var(--ease); }
@@ -325,14 +328,14 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .hero::before{
   content:""; position:absolute; z-index:-1; inset:0;
   background:
-    radial-gradient(120% 70% at 8% 0%, rgba(15,122,61,.06), transparent 62%),
-    radial-gradient(100% 65% at 100% 100%, rgba(210,31,31,.05), transparent 62%);
+    radial-gradient(120% 70% at 8% 0%, rgba(0,107,63,.06), transparent 62%),
+    radial-gradient(100% 65% at 100% 100%, rgba(214,40,40,.05), transparent 62%);
 }
 .hero-grid{ display:grid; grid-template-columns:1.08fr .92fr; gap:40px; align-items:center; }
 
 .hero-seal{
   width:112px; height:112px; border-radius:50%; object-fit:cover; margin-bottom:18px;
-  box-shadow:0 0 0 1px rgba(210,31,31,.55), 0 0 60px -10px rgba(210,31,31,.5), 0 20px 50px -18px rgba(0,0,0,.9);
+  box-shadow:0 0 0 1px rgba(214,40,40,.55), 0 0 60px -10px rgba(214,40,40,.5), 0 20px 50px -18px rgba(0,0,0,.9);
   animation:sealIn 1.4s var(--ease) both;
 }
 @keyframes sealIn{ from{ opacity:0; transform:scale(.82) rotate(-14deg); } }
@@ -366,8 +369,8 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   content:""; position:absolute; z-index:-1; pointer-events:none;
   left:-14%; top:2%; width:96%; height:64%;
   background:
-    radial-gradient(ellipse at 34% 44%, rgba(15,122,61,.09), transparent 66%),
-    radial-gradient(ellipse at 62% 68%, rgba(210,31,31,.06), transparent 64%);
+    radial-gradient(ellipse at 34% 44%, rgba(0,107,63,.09), transparent 66%),
+    radial-gradient(ellipse at 62% 68%, rgba(214,40,40,.06), transparent 64%);
   filter:blur(56px);
 }
 
@@ -430,7 +433,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   content:""; position:absolute; z-index:3; pointer-events:none;
   inset:-15px -15px -15px -15px;
   border-radius:999px 999px 50px 50px;
-  border:1px solid rgba(255,91,74,.20);
+  border:1px solid rgba(224,94,94,.20);
 }
 
 /* Glow behind the subject */
@@ -441,8 +444,8 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   position:absolute; z-index:0; pointer-events:none;
   inset:-12% -8% -4%;
   background:
-    radial-gradient(circle at 50% 36%, rgba(15,122,61,.16), transparent 62%),
-    radial-gradient(circle at 60% 74%, rgba(210,31,31,.10), transparent 60%);
+    radial-gradient(circle at 50% 36%, rgba(0,107,63,.16), transparent 62%),
+    radial-gradient(circle at 60% 74%, rgba(214,40,40,.10), transparent 60%);
   filter:blur(54px);
   animation:auraPulse 9s var(--ease-io) infinite;
 }
@@ -452,12 +455,12 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   position:relative; z-index:1;
   border-radius:999px 999px 36px 36px;   /* arch — half-circle top */
   overflow:hidden; aspect-ratio:4/5;
-  border:1px solid rgba(255,91,74,.55);          /* thin red outline */
+  border:1px solid rgba(224,94,94,.55);          /* thin red outline */
   box-shadow:
     0 1px 0 rgba(255,255,255,.14) inset,
     0 54px 120px -38px rgba(0,0,0,.96),            /* soft drop shadow */
-    0 0 90px -18px rgba(210,31,31,.30);           /* red halo */
-  background:linear-gradient(160deg,rgba(15,122,61,.3),rgba(210,31,31,.14));
+    0 0 90px -18px rgba(214,40,40,.30);           /* red halo */
+  background:linear-gradient(160deg,rgba(0,107,63,.3),rgba(214,40,40,.14));
 }
 /* 16% keeps the crown clear of the arch curve, which bites in at the sides */
 .portrait-frame img{ width:100%; height:100%; object-fit:cover; object-position:50% 16%; filter:contrast(1.04) saturate(1.05); }
@@ -465,21 +468,28 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   content:""; position:absolute; inset:0;
   background:linear-gradient(to top,rgba(10,11,11,.92) 0%,rgba(10,11,11,.15) 42%,transparent 68%);
 }
+/* This card always sits over a photo + dark scrim (.portrait-frame::after),
+   regardless of whether the section around it is light or dark — so unlike
+   most text on the page, its colour can't come from inheritance. It briefly
+   inherited the page's charcoal text colour when the hero went white, which
+   made it nearly unreadable against its own dark backdrop; pinned explicitly
+   here instead, the way .kakepami already pins its own white. */
 .portrait-tag{
   position:absolute; left:18px; right:18px; bottom:18px; z-index:2;
   padding:16px 20px; border-radius:18px;
-  background:rgba(10,11,11,.5); border:1px solid var(--glass-line-2);
+  background:rgba(10,11,11,.55); border:1px solid rgba(255,255,255,.16);
   backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+  color:#fff;
 }
-.portrait-tag b{ font-family:var(--ff-display); font-size:16px; display:block; letter-spacing:-.02em; }
-.portrait-tag span{ font-size:12.5px; color:var(--muted-2); letter-spacing:.04em; }
+.portrait-tag b{ font-family:var(--ff-display); font-size:16px; display:block; letter-spacing:-.02em; color:#fff; }
+.portrait-tag span{ font-size:12.5px; color:#8fe6b4; letter-spacing:.04em; }
 
 .kakepami{
   position:absolute; top:22px; right:-16px; z-index:4;
   padding:11px 20px; border-radius:100px;
   background:linear-gradient(160deg,var(--red),var(--red-deep));
   color:#fff; font-family:var(--ff-display); font-weight:800; font-size:14px; letter-spacing:-.01em;
-  box-shadow:0 14px 34px -12px rgba(210,31,31,.85);
+  box-shadow:0 14px 34px -12px rgba(214,40,40,.85);
   animation:bob 4.5s var(--ease-io) infinite;
 }
 @keyframes bob{ 50%{ transform:translateY(-9px) rotate(-2deg); } }
@@ -506,7 +516,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .ticker{
   padding:0; border-block:1px solid rgba(255,255,255,.09); background:var(--black); overflow:hidden;
   --muted-2:   rgba(255,255,255,.54);
-  --green-lit: #33c46f;
+  --green-lit: #1ca55d;
 }
 .ticker-track{ display:flex; gap:40px; padding:15px 0; width:max-content; animation:slide 46s linear infinite; }
 .ticker:hover .ticker-track{ animation-play-state:paused; }
@@ -585,14 +595,14 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 }
 
 .cand-statement{
-  margin:22px 0 0; font-family:var(--ff-serif); font-weight:800; font-style:italic;
+  margin:22px 0 0; font-family:var(--ff-serif); font-weight:700; font-style:italic;
   font-size:clamp(19px,2.1vw,25px); line-height:1.42; letter-spacing:-.015em; color:var(--red-lit);
 }
 
 .cand blockquote{
   position:relative; margin:30px 0 0; padding:28px 30px 26px 34px; border-radius:20px;
   border-left:2px solid var(--red); overflow:hidden;
-  background:linear-gradient(100deg,rgba(210,31,31,.10),transparent);
+  background:linear-gradient(100deg,rgba(214,40,40,.10),transparent);
   font-family:var(--ff-serif); font-size:clamp(18px,2vw,23px); font-weight:700;
   line-height:1.6; letter-spacing:-.012em; font-style:italic;
 }
@@ -642,7 +652,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .chip.on{
   background:linear-gradient(160deg,var(--red),var(--red-deep)); color:#fff;
   border-color:transparent; font-weight:700;
-  box-shadow:0 10px 26px -10px rgba(210,31,31,.75);
+  box-shadow:0 10px 26px -10px rgba(214,40,40,.75);
 }
 .chip .rank{
   width:19px; height:19px; border-radius:50%; display:none;
@@ -677,7 +687,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   background:rgba(10,11,11,.045); border:1px solid var(--glass-line); margin-bottom:18px;
   transition:border-color .35s, background .35s;
 }
-.search:focus-within{ border-color:rgba(210,31,31,.55); background:rgba(10,11,11,.07); }
+.search:focus-within{ border-color:rgba(214,40,40,.55); background:rgba(10,11,11,.07); }
 .search svg{ flex:none; opacity:.5; }
 .search input{ flex:1; background:none; border:0; outline:0; font-size:15px; }
 .search input::placeholder{ color:var(--muted-2); }
@@ -690,7 +700,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   border:1px solid transparent;
 }
 .comm-item:hover{ background:rgba(10,11,11,.05); transform:translateX(4px); }
-.comm-item.on{ background:rgba(210,31,31,.14); border-color:rgba(210,31,31,.4); }
+.comm-item.on{ background:rgba(214,40,40,.14); border-color:rgba(214,40,40,.4); }
 .comm-item b{ font-size:15px; font-weight:600; display:block; }
 .comm-item small{ font-size:12.5px; color:var(--muted-2); }
 .comm-dot{ width:8px; height:8px; border-radius:50%; background:var(--red); flex:none; box-shadow:0 0 12px var(--red); }
@@ -701,7 +711,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .map-pin{ cursor:pointer; transition:.4s var(--ease); transform-box:fill-box; transform-origin:center; }
 .map-pin circle{ transition:.4s var(--ease); }
 .map-pin:hover circle, .map-pin.on circle{ r:7; fill:var(--red-lit); }
-.map-pin.on{ filter:drop-shadow(0 0 10px rgba(255,91,74,.9)); }
+.map-pin.on{ filter:drop-shadow(0 0 10px rgba(224,94,94,.9)); }
 .map-caption{ margin:16px 0 0; font-size:12.5px; color:var(--muted-2); text-align:center; line-height:1.5; }
 
 /* ============================================================
@@ -716,7 +726,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   border-top:1px solid rgba(10,11,11,.09); line-height:1.62; cursor:pointer;
   transition:color .3s;
 }
-.check li:hover{ color:#0a0b0b; }
+.check li:hover{ color:#1e1e1e; }
 .check li:first-child{ border-top:0; }
 .check .box{
   width:20px; height:20px; border-radius:7px; flex:none; margin-top:1px;
@@ -726,7 +736,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .check .box svg{ opacity:0; transform:scale(.5); transition:.4s var(--ease); }
 .check li.done .box{ background:linear-gradient(160deg,var(--red),var(--red-deep)); border-color:transparent; }
 .check li.done .box svg{ opacity:1; transform:scale(1); }
-.check li.done{ color:var(--muted-2); text-decoration:line-through; text-decoration-color:rgba(210,31,31,.5); }
+.check li.done{ color:var(--muted-2); text-decoration:line-through; text-decoration-color:rgba(214,40,40,.5); }
 
 /* ============================================================
    GALLERY
@@ -739,10 +749,13 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .gal-poster img{ object-fit:contain; object-position:50% 50%; background:#0a0b0b; }
 .gal-poster:hover img{ transform:none; }
 .gal:hover img{ transform:scale(1.06); }
-.gal::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top,rgba(10,11,11,.7),transparent 55%); pointer-events:none; }
+.gal::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top,rgba(10,11,11,.75),transparent 55%); pointer-events:none; }
+/* Same fix as .portrait-tag: this sits on a photo + dark scrim regardless of
+   page theme, so it needs its own colour rather than inheriting the page's
+   (now light-mode) text colour. */
 .gal figcaption{
   position:absolute; left:16px; bottom:14px; z-index:2; font-size:12.5px; font-weight:600;
-  letter-spacing:.02em; text-shadow:0 2px 12px rgba(0,0,0,.8);
+  letter-spacing:.02em; color:#fff; text-shadow:0 2px 12px rgba(0,0,0,.8);
 }
 
 /* ============================================================
@@ -758,13 +771,13 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   background:rgba(10,11,11,.04); border:1px solid var(--glass-line); outline:0;
   font-size:15px; transition:border-color .35s, background .35s;
 }
-.f input:focus,.f select:focus,.f textarea:focus{ border-color:rgba(210,31,31,.6); background:rgba(10,11,11,.02); }
+.f input:focus,.f select:focus,.f textarea:focus{ border-color:rgba(214,40,40,.6); background:rgba(10,11,11,.02); }
 .f textarea{ resize:vertical; min-height:88px; }
 .f select{ appearance:none; cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230a0b0b' stroke-opacity='.5' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231e1e1e' stroke-opacity='.5' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat; background-position:right 17px center; padding-right:42px;
 }
-.f select option{ background:#fff; color:#0a0b0b; }
+.f select option{ background:#fff; color:#1e1e1e; }
 .form-note{ font-size:12.5px; color:var(--muted-2); margin:14px 0 0; line-height:1.55; text-align:center; }
 
 .join-side{ display:flex; flex-direction:column; gap:20px; }
@@ -778,7 +791,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .ways h4{ font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--red-lit); margin-bottom:18px; }
 .way{ display:flex; gap:15px; align-items:center; padding:14px 0; border-top:1px solid rgba(10,11,11,.10); }
 .way:first-of-type{ border-top:0; }
-.way-ico{ width:40px; height:40px; border-radius:13px; flex:none; display:grid; place-items:center; background:rgba(210,31,31,.14); border:1px solid rgba(210,31,31,.28); }
+.way-ico{ width:40px; height:40px; border-radius:13px; flex:none; display:grid; place-items:center; background:rgba(214,40,40,.14); border:1px solid rgba(214,40,40,.28); }
 .way b{ display:block; font-size:14.5px; font-weight:600; }
 .way small{ font-size:12.5px; color:var(--muted-2); }
 
@@ -806,7 +819,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   transform:translateY(-3px);
   background:linear-gradient(160deg,var(--red) 0%,var(--red-deep) 100%);
   color:#fff; border-color:transparent;
-  box-shadow:0 12px 30px -10px rgba(210,31,31,.8);
+  box-shadow:0 12px 30px -10px rgba(214,40,40,.8);
 }
 /* Not configured yet — visible to the team, inert to visitors */
 .soc.is-unset{ opacity:.34; border-style:dashed; cursor:not-allowed; }
@@ -824,7 +837,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .soc-row:hover{ transform:translateX(4px); }
 .soc-row-ico{
   width:40px; height:40px; border-radius:13px; flex:none; display:grid; place-items:center;
-  background:rgba(210,31,31,.14); border:1px solid rgba(210,31,31,.28); color:var(--red-lit);
+  background:rgba(214,40,40,.14); border:1px solid rgba(214,40,40,.28); color:var(--red-lit);
 }
 .soc-row-ico svg{ width:17px; height:17px; display:block; }
 .soc-row b{ display:block; font-size:14.5px; font-weight:600; }
@@ -844,13 +857,13 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
    inside re-themes for this dark ground automatically. */
 .footer{
   padding:80px 0 40px; margin-top:0;
-  background:linear-gradient(175deg,#0a3d22 0%,#0a1310 62%,#0a0b0b 100%);
+  background:linear-gradient(175deg,#006b3f 0%,#0a1310 62%,#0a0b0b 100%);
   color:#fff;
 
   --muted:        rgba(255,255,255,.66);
   --muted-2:      rgba(255,255,255,.54);
-  --red-lit:      #ff5b4a;
-  --green-lit:    #33c46f;
+  --red-lit:      #e05e5e;
+  --green-lit:    #1ca55d;
   --glass:        rgba(255,255,255,.07);   /* .soc icon buttons need this to not be solid white */
   --glass-strong: rgba(255,255,255,.12);
   --glass-line:   rgba(255,255,255,.12);
@@ -861,7 +874,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .footer-brand{ max-width:340px; }
 /* Direct-child combinator: scopes this to the seal photo only, so it can never
    collide with the .ndc-flag image nested one level deeper in .party-badge-lg. */
-.footer-brand > img{ width:82px; height:82px; border-radius:50%; margin-bottom:18px; box-shadow:0 0 0 1px rgba(210,31,31,.5); }
+.footer-brand > img{ width:82px; height:82px; border-radius:50%; margin-bottom:18px; box-shadow:0 0 0 1px rgba(214,40,40,.5); }
 .footer-brand p{ font-size:14px; color:var(--muted-2); line-height:1.65; margin:0; }
 .footer-cols{ display:flex; gap:56px; margin-left:auto; flex-wrap:wrap; }
 .footer-col h5{ font-family:var(--ff-display); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--red-lit); margin:0 0 16px; font-weight:700; }
@@ -882,7 +895,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .toast{
   position:fixed; left:50%; bottom:30px; transform:translate(-50%,140%);
   padding:15px 26px; border-radius:100px; z-index:200;
-  background:rgba(10,11,11,.86); border:1px solid rgba(210,31,31,.4);
+  background:rgba(10,11,11,.86); border:1px solid rgba(214,40,40,.4);
   backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
   font-size:14px; font-weight:500; box-shadow:0 20px 50px -18px rgba(0,0,0,.9);
   transition:transform .7s var(--ease); max-width:88vw; text-align:center;
@@ -918,11 +931,12 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
     display:block; margin-top:8px; text-align:center;
     background:linear-gradient(160deg,var(--red) 0%,var(--red-deep) 100%);
     color:#fff; font-family:var(--ff-display); font-weight:800;
-    box-shadow:0 10px 28px -12px rgba(210,31,31,.8);
+    box-shadow:0 10px 28px -12px rgba(214,40,40,.8);
   }
   .nav-links .m-cta:hover{ color:#fff; }
   .nav-burger{ display:flex; }
   .nav-cta{ display:none; }
+  .nav-donate{ display:none; }
 
   /* --- Portrait stacks under the slogan --- */
   .hero{ padding-top:calc(var(--nav-h) + 28px); }

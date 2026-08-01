@@ -321,9 +321,9 @@ const pinsEl = $('#pins');
 
 pinsEl.innerHTML = COMMUNITIES.map(c => `
   <g class="map-pin" data-name="${c.name}" tabindex="0" role="button" aria-label="${c.name}">
-    <circle cx="${c.x}" cy="${c.y}" r="5" fill="#d21f1f" stroke="rgba(255,255,255,.65)" stroke-width="1.2"></circle>
+    <circle cx="${c.x}" cy="${c.y}" r="5" fill="#d62828" stroke="rgba(255,255,255,.65)" stroke-width="1.2"></circle>
     <text x="${c.x}" y="${c.y - 11}" text-anchor="middle" font-size="9.5"
-          font-family="Inter,sans-serif" fill="rgba(255,255,255,.72)">${c.name}</text>
+          font-family="Lato,sans-serif" fill="rgba(255,255,255,.72)">${c.name}</text>
   </g>`).join('');
 
 function renderCommunities(filter = ''){
@@ -472,21 +472,21 @@ function drawCard(){
 
   // Background — deep NDC green, matching the page field
   const bg = ctx.createLinearGradient(0, 0, W, H);
-  bg.addColorStop(0, '#0e3a22');
-  bg.addColorStop(.55, '#0a2617');
-  bg.addColorStop(1, '#071a10');
+  bg.addColorStop(0, '#006b3f');
+  bg.addColorStop(.55, '#0a1310');
+  bg.addColorStop(1, '#0a0b0b');
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
   // Glow
   const glow = ctx.createRadialGradient(W * .8, H * .18, 0, W * .8, H * .18, W * .8);
-  glow.addColorStop(0, 'rgba(210,31,31,.30)');
-  glow.addColorStop(1, 'rgba(210,31,31,0)');
+  glow.addColorStop(0, 'rgba(214,40,40,.30)');
+  glow.addColorStop(1, 'rgba(214,40,40,0)');
   ctx.fillStyle = glow;
   ctx.fillRect(0, 0, W, H);
 
   // Red frame
-  ctx.strokeStyle = 'rgba(210,31,31,.55)';
+  ctx.strokeStyle = 'rgba(214,40,40,.55)';
   ctx.lineWidth = 3;
   roundRect(28, 28, W - 56, H - 56, 34);
   ctx.stroke();
@@ -498,7 +498,7 @@ function drawCard(){
     ctx.beginPath(); ctx.arc(cx, cy, d / 2, 0, Math.PI * 2); ctx.clip();
     ctx.drawImage(seal, cx - d / 2, cy - d / 2, d, d);
     ctx.restore();
-    ctx.strokeStyle = 'rgba(255,91,74,.85)'; ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(224,94,94,.85)'; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.arc(cx, cy, d / 2 + 6, 0, Math.PI * 2); ctx.stroke();
   }
 
@@ -506,37 +506,37 @@ function drawCard(){
 
   // "I stand with"
   ctx.fillStyle = 'rgba(255,255,255,.55)';
-  ctx.font = '500 26px Inter, sans-serif';
+  ctx.font = '500 26px Lato, sans-serif';
   ctx.fillText('I  S T A N D  W I T H', W / 2, 380);
 
   // ADA
   const redGrad = ctx.createLinearGradient(W * .2, 0, W * .8, 0);
-  redGrad.addColorStop(0, '#ff5b4a');
-  redGrad.addColorStop(.5, '#d21f1f');
+  redGrad.addColorStop(0, '#e05e5e');
+  redGrad.addColorStop(.5, '#d62828');
   redGrad.addColorStop(1, '#ffd9d2');
   ctx.fillStyle = redGrad;
-  ctx.font = '800 150px "Plus Jakarta Sans", Inter, sans-serif';
+  ctx.font = '800 150px "Montserrat", Lato, sans-serif';
   ctx.fillText('ADA', W / 2, 505);
 
   // Supporter name
   ctx.fillStyle = '#fff';
-  ctx.font = '800 40px "Plus Jakarta Sans", Inter, sans-serif';
+  ctx.font = '800 40px "Montserrat", Lato, sans-serif';
   ctx.fillText(name ? name.toUpperCase() : 'ADD YOUR NAME', W / 2, 580);
 
   if (comm){
     ctx.fillStyle = 'rgba(255,255,255,.5)';
-    ctx.font = '500 24px Inter, sans-serif';
+    ctx.font = '500 24px Lato, sans-serif';
     ctx.fillText(comm.toUpperCase(), W / 2, 618);
   }
 
   // Priorities
   let y = 690;
   if (picks.length){
-    ctx.fillStyle = 'rgba(255,91,74,.85)';
-    ctx.font = '600 19px Inter, sans-serif';
+    ctx.fillStyle = 'rgba(224,94,94,.85)';
+    ctx.font = '600 19px Lato, sans-serif';
     ctx.fillText('MY PRIORITIES FOR ADA', W / 2, y);
     y += 42;
-    ctx.font = '600 28px "Plus Jakarta Sans", Inter, sans-serif';
+    ctx.font = '600 28px "Montserrat", Lato, sans-serif';
     ctx.fillStyle = '#fff';
     picks.forEach((id, n) => {
       ctx.fillText(`${n + 1}.  ${ISSUES.find(x => x.id === id).label}`, W / 2, y);
@@ -553,11 +553,11 @@ function drawCard(){
 
   // Slogan
   ctx.fillStyle = '#fff';
-  ctx.font = '800 34px "Plus Jakarta Sans", Inter, sans-serif';
+  ctx.font = '800 34px "Montserrat", Lato, sans-serif';
   ctx.fillText('RETURN · REBUILD · REPRESENT', W / 2, 908);
 
   ctx.fillStyle = 'rgba(255,255,255,.45)';
-  ctx.font = '500 22px Inter, sans-serif';
+  ctx.font = '500 22px Lato, sans-serif';
   ctx.fillText(`${CAMPAIGN.candidate}  ·  …Kakepami!`, W / 2, 946);
 }
 
