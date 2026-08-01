@@ -441,7 +441,18 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
    what is now a white page, which made it invisible. */
 .hero-portrait::before{
   content:""; position:absolute; z-index:0; pointer-events:none;
-  inset:-4% -24% -4% -24%;   /* wide horizontally so straight stripes actually read as stripes */
+  /* Horizontal spread is fixed px, not %, on purpose. The hero-grid's gap
+     between columns is a constant 40px regardless of viewport — but a
+     percentage inset grows with the portrait column's own width (363px at
+     901px viewport, up to 524px once the shell hits its 1180px cap), so it
+     eats into that fixed gap faster than the gap can accommodate. At -24%
+     this reached ~100px past the frame at 1024px wide — well past the text
+     column's edge. Even the "safer" -8% still overlapped by 2px at the
+     shell's capped width (524px column, checked at both 1283px and 1400px
+     viewport — identical result, because the column stops growing there).
+     A fixed offset doesn't have this failure mode: -24px leaves a real
+     16px of the 40px gap free at every desktop width, checked. */
+  inset:-4% -24px -4% -24px;
   border-radius:28px;        /* rectangular, matching the reference — not a circle */
   overflow:hidden;
   background:linear-gradient(90deg,
