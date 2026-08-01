@@ -1,43 +1,54 @@
 /* ============================================================
    DJAGBLETEY — Frank Quarshie for Ada
-   Design system: NDC black · red · white · green, Apple-grade glass
+   Design system v3: white ground, green content, red action —
+   the customer's brief, matching the structure of johnmahama.org
+   (white page, green headings/nav, red reserved for CTAs and bands).
+
+   This inverts v2 (black ground, white as an occasional opt-in
+   section). Now white is the default surface everywhere; the hero
+   is the one deliberately colourful island, the same way the
+   reference site uses a green/red hero band against an otherwise
+   white page. See HERO below for the scoped dark-theme overrides
+   that used to be the global default.
    ============================================================ */
 
 :root{
-  /* ---- NDC: black · red · white · green ----
-     All four party colours carry weight here. Black is the ground, so green
-     reads as a deliberate colour rather than the ambient tint of everything;
-     white is a real surface (see .sec-light), not just a translucent overlay. */
-  --black:      #0a0b0b;   /* party black — the field's true base */
-  --black-2:    #111314;   /* raised black, panels and bands */
-  --white:      #ffffff;   /* party white — flag band + crisp surfaces */
+  --black:      #0a0b0b;   /* party black — logo/footer only now, not the ground */
+  --black-2:    #111314;
+  --white:      #ffffff;
 
-  --ink:        #0a0b0b;   /* body ground (kept as a name for existing refs) */
-  --ink-2:      #111314;
-  --green-deep: #0a3d22;   /* deep party green, background mid-tone */
-  --green:      #0f7a3d;   /* base party green */
-  --green-lit:  #33c46f;   /* bright green accent / glow */
-  --red:        #d21f1f;   /* base NDC red */
-  --red-lit:    #ff5b4a;   /* bright red highlight for gradients/glow */
-  --red-deep:   #7a1210;   /* dark red — used for text on white sections */
+  --ink:        #ffffff;   /* body ground is now white (name kept for existing refs) */
+  --ink-2:      #f3f5f3;
+  --green-deep: #0a3d22;   /* deep party green — headings darken to this on white */
+  --green:      #0f7a3d;   /* base party green — the site's primary content colour */
+  --green-lit:  #0d6f38;   /* green as it reads on white — 6.3:1, clears AA with margin */
+  --red:        #d21f1f;   /* base NDC red — reserved for CTAs and accent bands */
+  /* --red-lit is the eyebrow/label/stat-number colour used everywhere, so its
+     default must be legible on WHITE now — the bright #ff5b4a only comes back
+     inside .hero/.ticker/.footer, which re-declare it for their dark ground. */
+  --red-lit:    #a11616;
+  --red-deep:   #a11616;   /* red as it reads on white — darkened off the base for contrast */
 
   /* Ghana flag — kept accurate to the flag itself, independent of party colour */
   --gh-red:     #ce1126;
   --gh-gold:    #fcd116;
   --gh-green:   #006b3f;
 
-  /* Neutrals */
+  /* Neutrals — body text on white */
   --paper:      #fbf9f6;
   --paper-dim:  #eef0ee;
-  --muted:      rgba(255,255,255,.62);   /* ~6.8:1 on the field */
-  --muted-2:    rgba(255,255,255,.52);   /* ~4.9:1 — small labels still clear AA */
+  --muted:      rgba(10,11,11,.72);      /* ~9.8:1 on white */
+  --muted-2:    rgba(10,11,11,.60);      /* ~7.2:1 on white */
 
-  /* Glass */
-  --glass:        rgba(255,255,255,.055);
-  --glass-strong: rgba(255,255,255,.10);
-  --glass-line:   rgba(255,255,255,.13);
-  --glass-line-2: rgba(255,255,255,.22);
-  --blur:         saturate(180%) blur(28px);
+  /* Cards — solid white, lifted with shadow rather than translucent glass.
+     Backdrop-blur "frosted glass" is a dark-theme trick: it reads as depth
+     against a busy dark field. On flat white there is nothing to blur, so
+     cards are real white surfaces with a border and a soft shadow instead. */
+  --glass:        #ffffff;
+  --glass-strong: #ffffff;
+  --glass-line:   rgba(10,11,11,.10);
+  --glass-line-2: rgba(10,11,11,.16);
+  --blur:         none;
 
   /* Motion */
   --ease: cubic-bezier(.16,1,.3,1);
@@ -60,8 +71,8 @@ html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 
 body{
   margin:0;
-  background:var(--ink);
-  color:#fff;
+  background:#ffffff;
+  color:#0a0b0b;
   font-family:var(--ff-body);
   font-size:17px;
   line-height:1.78;
@@ -75,105 +86,31 @@ img{ max-width:100%; display:block; }
 a{ color:inherit; text-decoration:none; }
 button,input,select,textarea{ font:inherit; color:inherit; }
 
-::selection{ background:var(--red); color:var(--ink); }
-
-/* ---------- Ambient field ----------
-   Four stacked layers, deepest first:
-   1. .field        — party black ground, faint green cast at the extremes
-   2. .orb          — green + red blooms, read as light ON black
-   3. .field::before— woven fabric + salt-crystal lattice
-   4. .field::after — film grain + vignette
-
-   The ground is black, not green. When green washed the whole field it stopped
-   registering as a party colour and just became "the background"; against black
-   both green and red read as deliberate. ------------------------------------ */
-.field{
-  position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
-  background:
-    linear-gradient(197deg,
-      #0d1a13 0%,
-      #0a1310 26%,
-      #0a0b0b 52%,
-      #0a0b0b 74%,
-      #0c1611 100%);
-}
-
-/* Woven texture + faint diamond lattice — depth without clutter.
-   Masked to the centre so it never fights the edges of the type. */
-.field::before{
-  content:""; position:absolute; inset:-8%;
-  background-image:
-    repeating-linear-gradient(45deg,  rgba(255,255,255,.030) 0 1px, transparent 1px 52px),
-    repeating-linear-gradient(-45deg, rgba(255,255,255,.030) 0 1px, transparent 1px 52px),
-    repeating-linear-gradient(90deg,  rgba(255,255,255,.020) 0 1px, transparent 1px 5px),
-    repeating-linear-gradient(0deg,   rgba(0,0,0,.055)       0 1px, transparent 1px 5px);
-  -webkit-mask-image:radial-gradient(125% 95% at 50% 28%, #000 18%, transparent 76%);
-          mask-image:radial-gradient(125% 95% at 50% 28%, #000 18%, transparent 76%);
-}
-
-.field::after{
-  content:""; position:absolute; inset:0;
-  background:
-    radial-gradient(120% 80% at 50% 0%, transparent 40%, rgba(0,0,0,.88) 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
-  opacity:.5; mix-blend-mode:overlay;
-}
-/* Blooms are tuned for a black ground: green pulled back so it lights a corner
-   instead of flooding the page, red lifted so it holds the opposite side. */
-.orb{ position:absolute; border-radius:50%; filter:blur(100px); opacity:.5; }
-.orb.a{ width:48vw; height:48vw; left:-16vw; top:-16vw; background:radial-gradient(circle,#33c46f,transparent 64%); opacity:.34; }
-.orb.b{ width:46vw; height:46vw; right:-14vw; top:20vh; background:radial-gradient(circle,#d21f1f,transparent 64%); opacity:.34; }
-.orb.c{ width:58vw; height:58vw; left:16vw; bottom:-30vw; background:radial-gradient(circle,#0f7a3d,transparent 66%); opacity:.22; }
+::selection{ background:var(--red); color:#fff; }
 
 /* ---------- Layout ---------- */
 .shell{ width:var(--shell); margin-inline:auto; position:relative; z-index:2; }
-/* Was clamp(96px,12vw,184px): at desktop that stacked 184 bottom + 184 top =
-   368px of empty field between every section, which read as the page having
-   lost its thread. Tightened so sections stay distinct but keep momentum. */
-section{ position:relative; z-index:2; padding:clamp(78px,7.5vw,116px) 0; }
+section{ position:relative; z-index:2; padding:clamp(72px,7vw,108px) 0; }
 
 /* ============================================================
-   LIGHT SECTIONS
-   The party's white, used as a real surface. Because every component reads
-   its colours from custom properties, re-declaring the tokens on this one
-   class re-themes everything inside it.
-
-   These were warm beige, which read as "paper" rather than as one of the
-   four NDC colours, and left the cards barely separable from the ground.
-   Now: near-white field, white cards, near-black text.
+   "LIGHT" SECTIONS — now just a faint tint band
+   White is the page default now (see :root), so .sec-light no longer means
+   "the white section" — every section is white. It survives as a very faint
+   off-white band on two sections ("The Candidate", "Be ready") purely for
+   rhythm, the way the reference site occasionally runs a light-grey band
+   between white ones. The old arc-cut border-radius trick is gone: that
+   only read as "a cut between two colours" when there WAS a colour
+   difference either side of it. Against white on white it would just be
+   a floating capsule shape with no reason to exist.
    ============================================================ */
 .sec-light{
-  --muted:      rgba(10,11,11,.74);
-  --muted-2:    rgba(10,11,11,.60);   /* ~5.6:1 on white */
-  --glass:        rgba(255,255,255,.92);
-  --glass-strong: #ffffff;
-  --glass-line:   rgba(10,11,11,.10);
-  --glass-line-2: rgba(10,11,11,.16);
-  --red-lit:   var(--red-deep);        /* red must darken on white to stay legible */
-
-  color:#0a0b0b;
-  /* Near-white with the faintest green/red breath at opposite corners, so it
-     is unmistakably white rather than cream, but not a flat clinical slab. */
-  background:
-    radial-gradient(120% 70% at 8% 0%, rgba(15,122,61,.055), transparent 62%),
-    radial-gradient(100% 65% at 100% 100%, rgba(210,31,31,.045), transparent 62%),
-    linear-gradient(176deg,#fdfdfc 0%,#f7f8f6 56%,#fcfcfb 100%);
-  /* wide shallow arc top and bottom — the curved cut between sections */
-  border-radius:50% 50% 50% 50% / 78px 78px 78px 78px;
-  margin-block:-40px;
-  padding-block:clamp(104px,10vw,150px);
+  background:var(--ink-2);   /* #f3f5f3 — a hair off white, not a colour statement */
 }
-/* Cards lift off white with a real shadow instead of relying on tint alone. */
+/* Cards still lift off the tint with a real shadow. */
 .sec-light .glass{
-  box-shadow:0 1px 0 rgba(255,255,255,1) inset, 0 18px 44px -26px rgba(10,11,11,.30);
+  box-shadow:0 1px 0 rgba(255,255,255,1) inset, 0 18px 44px -26px rgba(10,11,11,.16);
 }
-.sec-light .glass::before{ opacity:0; }          /* specular edge reads wrong on light */
-.sec-light .cand-media img{ border-color:rgba(10,11,11,.12); box-shadow:0 42px 84px -38px rgba(10,11,11,.55); }
-.sec-light .check li:hover{ color:#0a0b0b; }
-.sec-light .check .box{ border-color:rgba(10,11,11,.25); }
-.sec-light .check li.done .box svg{ stroke:#fff; }
 .sec-light .check li.done .box{ background:linear-gradient(160deg,var(--red),var(--red-deep)); }
-.sec-light ::selection{ background:var(--green); color:#fff; }
 
 .eyebrow{
   display:inline-flex; align-items:center; gap:10px;
@@ -191,7 +128,12 @@ h1,h2,.cand blockquote{
   font-weight:900;
   letter-spacing:-.02em;   /* serif needs far less negative tracking than the sans */
 }
-h2{ font-size:clamp(34px,5vw,60px); line-height:1.14; }
+/* Section headings are green by default now — the site's primary content
+   colour, same role green plays on the reference site. Card titles (h3)
+   stay near-black: they're information you scan, not a section statement,
+   and an all-green page stops reading as a deliberate choice. The hero's
+   h1 overrides back to white — see HERO. */
+h2{ font-size:clamp(34px,5vw,60px); line-height:1.14; color:var(--green-deep); }
 /* Sans stays on card titles — they're information, not statement */
 h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; }
 .lede{ font-size:clamp(17px,1.7vw,20px); color:var(--muted); max-width:62ch; line-height:1.82; }
@@ -209,11 +151,13 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   position:relative;
   overflow:hidden;
 }
-/* specular top edge */
+/* Specular top edge — a dark-glass trick (a highlight catching light on a
+   frosted panel over a busy dark field). Every section is white now,
+   including the hero, so it's off everywhere — nothing re-enables it. */
 .glass::before{
   content:""; position:absolute; inset:0 0 auto; height:1px;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);
-  opacity:.6;
+  opacity:0;
 }
 
 /* ---------- Buttons ---------- */
@@ -247,15 +191,18 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 }
 .btn-glass:hover{ background:rgba(255,255,255,.16); transform:translateY(-2px); }
 
-/* Secondary: true outline, so the red primary clearly leads */
+/* Secondary: true outline, so the red primary clearly leads. This button
+   appears on both the dark hero and, now, white sections — the old hover
+   state was a translucent red tint with hardcoded white text, which read
+   fine on a dark backdrop but goes white-text-on-pale-pink on white. Fill
+   solid on hover instead: that's white-on-red, correct on any ground. */
 .btn-outline{
   background:transparent;
-  border-color:rgba(255,91,74,.45);
+  border-color:var(--red-lit);
   color:var(--red-lit);
-  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
 }
 .btn-outline:hover{
-  background:rgba(210,31,31,.10);
+  background:var(--red);
   border-color:var(--red);
   color:#fff;
   transform:translateY(-2px);
@@ -314,53 +261,73 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .party-badge{ display:inline-flex; align-items:center; }
 .party-badge-lg{ margin-top:18px; }
 .party-badge-lg .ndc-flag{ width:36px; border-radius:9px; }
-.sec-light .ndc-flag{ box-shadow:0 0 0 1px rgba(10,11,11,.18), 0 2px 7px rgba(10,11,11,.28); }
+.sec-light .ndc-flag,
+.hero .ndc-flag{ box-shadow:0 0 0 1px rgba(10,11,11,.18), 0 2px 7px rgba(10,11,11,.28); }
 
 /* ============================================================
    NAV
    ============================================================ */
+/* White pill nav, floating over both the dark hero and the white page below
+   it — matching the reference's white nav bar and green link colour, while
+   keeping this site's floating-pill shape rather than a full-width bar. */
 .nav{
   position:fixed; top:14px; left:50%; transform:translateX(-50%);
   width:var(--shell); z-index:100; border-radius:100px;
   display:flex; align-items:center; gap:18px;
   padding:9px 9px 9px 20px;
-  background:rgba(10,11,11,.42); border:1px solid transparent;
+  background:rgba(255,255,255,.88); border:1px solid rgba(10,11,11,.08);
+  box-shadow:0 10px 34px -18px rgba(10,11,11,.35);
   backdrop-filter:saturate(180%) blur(20px); -webkit-backdrop-filter:saturate(180%) blur(20px);
   transition:background .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease), top .5s var(--ease);
 }
 .nav.stuck{
-  background:rgba(10,11,11,.72); border-color:var(--glass-line);
-  box-shadow:0 18px 50px -22px rgba(0,0,0,.9), 0 1px 0 rgba(255,255,255,.08) inset;
+  background:rgba(255,255,255,.97); border-color:rgba(10,11,11,.10);
+  box-shadow:0 18px 50px -22px rgba(10,11,11,.28), 0 1px 0 rgba(255,255,255,.6) inset;
 }
 .nav-brand{ display:flex; align-items:center; gap:11px; margin-right:auto; }
-.nav-brand img{ width:34px; height:34px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 1px rgba(210,31,31,.6), 0 4px 14px rgba(0,0,0,.5); }
-.nav-brand b{ font-family:var(--ff-display); font-weight:800; font-size:15.5px; letter-spacing:.01em; }
+.nav-brand img{ width:34px; height:34px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 1px rgba(210,31,31,.6), 0 4px 14px rgba(10,11,11,.25); }
+.nav-brand b{ font-family:var(--ff-display); font-weight:800; font-size:15.5px; letter-spacing:.01em; color:var(--green-deep); }
 .nav-brand span{ display:block; font-size:10px; letter-spacing:.19em; text-transform:uppercase; color:var(--red-lit); font-weight:600; }
 .nav-links{ display:flex; gap:4px; }
 .nav-links a{
-  padding:9px 15px; border-radius:100px; font-size:14px; font-weight:500;
-  color:var(--muted); transition:color .3s, background .3s;
+  padding:9px 15px; border-radius:100px; font-size:14px; font-weight:600;
+  color:var(--green-deep); transition:color .3s, background .3s;
 }
-.nav-links a:hover{ color:#fff; background:rgba(255,255,255,.08); }
-.nav-links a.active{ color:#fff; background:rgba(255,255,255,.05); }
+.nav-links a:hover{ color:var(--green); background:rgba(15,122,61,.08); }
+.nav-links a.active{ color:var(--green); background:rgba(15,122,61,.10); }
 .nav-links a.active::after{
   content:""; display:block; margin:5px auto 0; width:14px; height:2px; border-radius:2px;
   background:linear-gradient(90deg,var(--red),var(--red-lit));
 }
 .nav-links .m-cta{ display:none; }   /* mobile-menu CTA — revealed under 900px */
 .nav-cta{ padding:11px 22px; font-size:14px; }
-.nav-burger{ display:none; width:42px; height:42px; border-radius:50%; background:var(--glass-strong); border:1px solid var(--glass-line-2); cursor:pointer; align-items:center; justify-content:center; }
-.nav-burger i{ display:block; width:16px; height:1.5px; background:#fff; position:relative; transition:.4s var(--ease); }
-.nav-burger i::before,.nav-burger i::after{ content:""; position:absolute; left:0; width:16px; height:1.5px; background:#fff; transition:.4s var(--ease); }
+.nav-burger{ display:none; width:42px; height:42px; border-radius:50%; background:rgba(10,11,11,.06); border:1px solid rgba(10,11,11,.14); cursor:pointer; align-items:center; justify-content:center; }
+.nav-burger i{ display:block; width:16px; height:1.5px; background:var(--green-deep); position:relative; transition:.4s var(--ease); }
+.nav-burger i::before,.nav-burger i::after{ content:""; position:absolute; left:0; width:16px; height:1.5px; background:var(--green-deep); transition:.4s var(--ease); }
 .nav-burger i::before{ top:-5px; } .nav-burger i::after{ top:5px; }
 .nav.open .nav-burger i{ background:transparent; }
 .nav.open .nav-burger i::before{ top:0; transform:rotate(45deg); }
 .nav.open .nav-burger i::after{ top:0; transform:rotate(-45deg); }
 
 /* ============================================================
-   HERO
+   HERO — now white, like every other section. No scoped dark-theme
+   token overrides needed any more: white IS the root default, so the
+   hero just inherits --muted/--red-lit/--glass etc. same as everywhere
+   else. The countdown bar renders as an ordinary white .glass card.
    ============================================================ */
-.hero{ min-height:100svh; display:flex; align-items:center; padding:calc(var(--nav-h) + 24px) 0 44px; overflow:hidden; }
+.hero{
+  position:relative; isolation:isolate; overflow:hidden;
+  min-height:100svh; display:flex; align-items:center;
+  padding:calc(var(--nav-h) + 24px) 0 44px;
+}
+/* Same faint corner wash as .sec-light, so the hero doesn't feel like a
+   flatter, more clinical white than the rest of the page. */
+.hero::before{
+  content:""; position:absolute; z-index:-1; inset:0;
+  background:
+    radial-gradient(120% 70% at 8% 0%, rgba(15,122,61,.06), transparent 62%),
+    radial-gradient(100% 65% at 100% 100%, rgba(210,31,31,.05), transparent 62%);
+}
 .hero-grid{ display:grid; grid-template-columns:1.08fr .92fr; gap:40px; align-items:center; }
 
 .hero-seal{
@@ -391,12 +358,16 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 
 /* Headline sits in its own soft gradient bloom so it reads as the anchor */
 .hero-copy{ position:relative; }
+/* Tuned way down from the dark-hero version: a blurred bloom at .40/.17
+   opacity read as rich colour glowing on black. The exact same gradient on
+   white doesn't glow, it just sits there as a green-and-pink smudge behind
+   the headline — so this is a hint of colour, not a light source. */
 .hero-copy::before{
   content:""; position:absolute; z-index:-1; pointer-events:none;
   left:-14%; top:2%; width:96%; height:64%;
   background:
-    radial-gradient(ellipse at 34% 44%, rgba(51,196,111,.40), transparent 66%),
-    radial-gradient(ellipse at 62% 68%, rgba(210,31,31,.17), transparent 64%);
+    radial-gradient(ellipse at 34% 44%, rgba(15,122,61,.09), transparent 66%),
+    radial-gradient(ellipse at 62% 68%, rgba(210,31,31,.06), transparent 64%);
   filter:blur(56px);
 }
 
@@ -463,12 +434,15 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 }
 
 /* Glow behind the subject */
+/* Same de-intensifying as .hero-copy::before, same reason: this glowed
+   against black at .58/.32 opacity; on white it would print as a green and
+   red stain around the portrait rather than a glow behind it. */
 .portrait-aura{
   position:absolute; z-index:0; pointer-events:none;
   inset:-12% -8% -4%;
   background:
-    radial-gradient(circle at 50% 36%, rgba(51,196,111,.58), transparent 62%),
-    radial-gradient(circle at 60% 74%, rgba(210,31,31,.32), transparent 60%);
+    radial-gradient(circle at 50% 36%, rgba(15,122,61,.16), transparent 62%),
+    radial-gradient(circle at 60% 74%, rgba(210,31,31,.10), transparent 60%);
   filter:blur(54px);
   animation:auraPulse 9s var(--ease-io) infinite;
 }
@@ -526,7 +500,14 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 /* ---------- Ticker ---------- */
 /* Solid party black, so the band separates the hero from the page instead of
    being one more translucent layer over the field. */
-.ticker{ padding:0; border-block:1px solid rgba(255,255,255,.09); background:var(--black); overflow:hidden; }
+/* Solid black band — a third small dark accent between the hero and the
+   white page. Scoped light-on-dark tokens again: --muted-2 and --green-lit
+   default to dark-on-white now, which would be invisible on black. */
+.ticker{
+  padding:0; border-block:1px solid rgba(255,255,255,.09); background:var(--black); overflow:hidden;
+  --muted-2:   rgba(255,255,255,.54);
+  --green-lit: #33c46f;
+}
 .ticker-track{ display:flex; gap:40px; padding:15px 0; width:max-content; animation:slide 46s linear infinite; }
 .ticker:hover .ticker-track{ animation-play-state:paused; }
 @keyframes slide{ to{ transform:translateX(-50%); } }
@@ -640,7 +621,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .pillar h3{ margin-bottom:12px; }
 .pillar p{ margin:0; font-size:14.5px; color:var(--muted); line-height:1.76; }
 .pillar ul{ margin:18px 0 0; padding:0; list-style:none; }
-.pillar li{ font-size:13.5px; color:var(--muted-2); padding:9px 0 9px 20px; position:relative; line-height:1.66; border-top:1px solid rgba(255,255,255,.06); }
+.pillar li{ font-size:13.5px; color:var(--muted-2); padding:9px 0 9px 20px; position:relative; line-height:1.66; border-top:1px solid rgba(10,11,11,.09); }
 .pillar li::before{ content:""; position:absolute; left:2px; top:17px; width:5px; height:5px; border-radius:50%; background:var(--red); }
 
 /* ============================================================
@@ -652,12 +633,12 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .chips{ display:flex; flex-wrap:wrap; gap:10px; }
 .chip{
   padding:12px 18px; border-radius:100px; cursor:pointer;
-  background:rgba(255,255,255,.06); border:1px solid var(--glass-line);
+  background:rgba(10,11,11,.045); border:1px solid var(--glass-line);
   font-size:14px; font-weight:500; letter-spacing:-.005em;
   transition:transform .45s var(--ease), background .3s, border-color .3s, color .3s;
   display:inline-flex; align-items:center; gap:9px;
 }
-.chip:hover{ transform:translateY(-2px); background:rgba(255,255,255,.11); border-color:var(--glass-line-2); }
+.chip:hover{ transform:translateY(-2px); background:rgba(10,11,11,.07); border-color:var(--glass-line-2); }
 .chip.on{
   background:linear-gradient(160deg,var(--red),var(--red-deep)); color:#fff;
   border-color:transparent; font-weight:700;
@@ -676,14 +657,14 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .mandate-list{ list-style:none; margin:0 0 22px; padding:0; min-height:150px; }
 .mandate-list li{
   display:flex; gap:14px; align-items:flex-start; padding:14px 0;
-  border-bottom:1px solid rgba(255,255,255,.07);
+  border-bottom:1px solid rgba(10,11,11,.10);
   animation:fadeUp .55s var(--ease) both;
 }
 .mandate-list li b{ font-family:var(--ff-display); color:var(--red); font-size:15px; min-width:22px; }
 .mandate-list li div{ font-size:14px; line-height:1.5; }
 .mandate-list li small{ display:block; color:var(--muted-2); font-size:12.5px; margin-top:3px; }
 .mandate-empty{ color:var(--muted-2); font-size:14px; padding:16px 0; line-height:1.6; }
-.mandate-bar{ height:4px; border-radius:4px; background:rgba(255,255,255,.09); overflow:hidden; margin-bottom:18px; }
+.mandate-bar{ height:4px; border-radius:4px; background:rgba(10,11,11,.09); overflow:hidden; margin-bottom:18px; }
 .mandate-bar i{ display:block; height:100%; width:0; border-radius:4px; background:linear-gradient(90deg,var(--red),var(--red-lit)); transition:width .7s var(--ease); }
 
 /* ============================================================
@@ -693,22 +674,22 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .comm-panel{ padding:30px; border-radius:26px; }
 .search{
   display:flex; align-items:center; gap:12px; padding:14px 20px; border-radius:100px;
-  background:rgba(0,0,0,.28); border:1px solid var(--glass-line); margin-bottom:18px;
+  background:rgba(10,11,11,.045); border:1px solid var(--glass-line); margin-bottom:18px;
   transition:border-color .35s, background .35s;
 }
-.search:focus-within{ border-color:rgba(210,31,31,.55); background:rgba(0,0,0,.42); }
+.search:focus-within{ border-color:rgba(210,31,31,.55); background:rgba(10,11,11,.07); }
 .search svg{ flex:none; opacity:.5; }
 .search input{ flex:1; background:none; border:0; outline:0; font-size:15px; }
 .search input::placeholder{ color:var(--muted-2); }
 .comm-list{ max-height:360px; overflow-y:auto; margin:0; padding:0 6px 0 0; list-style:none; }
 .comm-list::-webkit-scrollbar{ width:5px; }
-.comm-list::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.16); border-radius:5px; }
+.comm-list::-webkit-scrollbar-thumb{ background:rgba(10,11,11,.18); border-radius:5px; }
 .comm-item{
   display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:16px;
   cursor:pointer; transition:background .3s, transform .45s var(--ease);
   border:1px solid transparent;
 }
-.comm-item:hover{ background:rgba(255,255,255,.07); transform:translateX(4px); }
+.comm-item:hover{ background:rgba(10,11,11,.05); transform:translateX(4px); }
 .comm-item.on{ background:rgba(210,31,31,.14); border-color:rgba(210,31,31,.4); }
 .comm-item b{ font-size:15px; font-weight:600; display:block; }
 .comm-item small{ font-size:12.5px; color:var(--muted-2); }
@@ -732,10 +713,10 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .check{ list-style:none; margin:0; padding:0; }
 .check li{
   display:flex; gap:13px; align-items:flex-start; padding:13px 0; font-size:14px; color:var(--muted);
-  border-top:1px solid rgba(255,255,255,.06); line-height:1.62; cursor:pointer;
+  border-top:1px solid rgba(10,11,11,.09); line-height:1.62; cursor:pointer;
   transition:color .3s;
 }
-.check li:hover{ color:#fff; }
+.check li:hover{ color:#0a0b0b; }
 .check li:first-child{ border-top:0; }
 .check .box{
   width:20px; height:20px; border-radius:7px; flex:none; margin-top:1px;
@@ -774,16 +755,16 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .f label{ display:block; font-size:12px; letter-spacing:.11em; text-transform:uppercase; color:var(--muted-2); margin-bottom:8px; font-weight:600; }
 .f input,.f select,.f textarea{
   width:100%; padding:14px 17px; border-radius:15px;
-  background:rgba(0,0,0,.3); border:1px solid var(--glass-line); outline:0;
+  background:rgba(10,11,11,.04); border:1px solid var(--glass-line); outline:0;
   font-size:15px; transition:border-color .35s, background .35s;
 }
-.f input:focus,.f select:focus,.f textarea:focus{ border-color:rgba(210,31,31,.6); background:rgba(0,0,0,.45); }
+.f input:focus,.f select:focus,.f textarea:focus{ border-color:rgba(210,31,31,.6); background:rgba(10,11,11,.02); }
 .f textarea{ resize:vertical; min-height:88px; }
 .f select{ appearance:none; cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffffff' stroke-opacity='.5' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230a0b0b' stroke-opacity='.5' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat; background-position:right 17px center; padding-right:42px;
 }
-.f select option{ background:#0c2617; color:#fff; }
+.f select option{ background:#fff; color:#0a0b0b; }
 .form-note{ font-size:12.5px; color:var(--muted-2); margin:14px 0 0; line-height:1.55; text-align:center; }
 
 .join-side{ display:flex; flex-direction:column; gap:20px; }
@@ -795,7 +776,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 
 .ways{ padding:30px; border-radius:26px; }
 .ways h4{ font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--red-lit); margin-bottom:18px; }
-.way{ display:flex; gap:15px; align-items:center; padding:14px 0; border-top:1px solid rgba(255,255,255,.07); }
+.way{ display:flex; gap:15px; align-items:center; padding:14px 0; border-top:1px solid rgba(10,11,11,.10); }
 .way:first-of-type{ border-top:0; }
 .way-ico{ width:40px; height:40px; border-radius:13px; flex:none; display:grid; place-items:center; background:rgba(210,31,31,.14); border:1px solid rgba(210,31,31,.28); }
 .way b{ display:block; font-size:14.5px; font-weight:600; }
@@ -837,7 +818,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .soc-rows{ display:flex; flex-direction:column; }
 .soc-row{
   display:flex; align-items:center; gap:15px; padding:14px 0;
-  border-top:1px solid rgba(255,255,255,.07); transition:transform .45s var(--ease);
+  border-top:1px solid rgba(10,11,11,.10); transition:transform .45s var(--ease);
 }
 .soc-row:first-child{ border-top:0; }
 .soc-row:hover{ transform:translateX(4px); }
@@ -854,7 +835,28 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 /* ============================================================
    FOOTER
    ============================================================ */
-.footer{ padding:80px 0 40px; border-top:1px solid var(--glass-line); background:rgba(0,0,0,.28); }
+/* The footer is the page's other dark bookend, mirroring the hero — a solid
+   ground, not the translucent rgba(0,0,0,.28) it used to be over the old
+   global dark field. That worked when .field sat behind it everywhere; on
+   a white page it would have rendered as a washed-out grey box with the
+   root's now-dark --muted text sitting on top of it, unreadable. Same
+   scoped-token trick as .hero: every var(--muted)/var(--red-lit) etc.
+   inside re-themes for this dark ground automatically. */
+.footer{
+  padding:80px 0 40px; margin-top:0;
+  background:linear-gradient(175deg,#0a3d22 0%,#0a1310 62%,#0a0b0b 100%);
+  color:#fff;
+
+  --muted:        rgba(255,255,255,.66);
+  --muted-2:      rgba(255,255,255,.54);
+  --red-lit:      #ff5b4a;
+  --green-lit:    #33c46f;
+  --glass:        rgba(255,255,255,.07);   /* .soc icon buttons need this to not be solid white */
+  --glass-strong: rgba(255,255,255,.12);
+  --glass-line:   rgba(255,255,255,.12);
+  --glass-line-2: rgba(255,255,255,.20);
+  --blur:         saturate(180%) blur(28px);
+}
 .footer-top{ display:flex; gap:40px; align-items:flex-start; flex-wrap:wrap; margin-bottom:50px; }
 .footer-brand{ max-width:340px; }
 /* Direct-child combinator: scopes this to the seal photo only, so it can never
@@ -903,15 +905,15 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   }
   .nav-links{
     position:absolute; top:calc(100% + 10px); left:0; right:0; flex-direction:column; gap:4px;
-    padding:14px; border-radius:26px; background:rgba(10,11,11,.94);
-    border:1px solid var(--glass-line); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
-    box-shadow:0 26px 60px -24px rgba(0,0,0,.95);
+    padding:14px; border-radius:26px; background:rgba(255,255,255,.98);
+    border:1px solid rgba(10,11,11,.10); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+    box-shadow:0 26px 60px -24px rgba(10,11,11,.35);
     opacity:0; pointer-events:none; transform:translateY(-10px) scale(.98);
     transform-origin:top center; transition:.45s var(--ease);
   }
   .nav.open .nav-links{ opacity:1; pointer-events:auto; transform:none; }
   /* generous tap targets — 52px tall */
-  .nav-links a{ padding:15px 18px; font-size:16px; border-radius:16px; color:rgba(255,255,255,.8); }
+  .nav-links a{ padding:15px 18px; font-size:16px; border-radius:16px; color:var(--green-deep); }
   .nav-links .m-cta{
     display:block; margin-top:8px; text-align:center;
     background:linear-gradient(160deg,var(--red) 0%,var(--red-deep) 100%);
