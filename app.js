@@ -47,7 +47,7 @@ const COMMUNITIES = [
   { name:'Toflokpo',   zone:'Inland',   x:116, y:128 },
   { name:'Koluedor',   zone:'Inland',   x:78,  y:142 },
   { name:'Anyamam',    zone:'Coastal',  x:140, y:214 },
-  { name:'Bonikope',   zone:'Coastal',  x:104, y:192 },
+  { name:'Bornikope',  zone:'Coastal',  x:104, y:192 },
   { name:'Pute',       zone:'Central',  x:196, y:120 },
   { name:'Luhuose',    zone:'Inland',   x:48,  y:180 },
   { name:'Wasakuse',   zone:'Inland',   x:88,  y:100 },
@@ -55,7 +55,15 @@ const COMMUNITIES = [
   { name:'Kewunor',    zone:'Coastal',  x:280, y:208 },
   { name:'Goi',        zone:'Central',  x:232, y:132 },
   { name:'Alorkpem',   zone:'Inland',   x:54,  y:116 },
-  { name:'Salom',      zone:'Central',  x:254, y:172 }
+  { name:'Salom',      zone:'Central',  x:254, y:172 },
+  { name:'Tojeh',      zone:'Inland',   x:100, y:160 },
+  { name:'Sege',       zone:'Inland',   x:60,  y:140 },
+  { name:'Hwakpo',     zone:'Inland',   x:130, y:110 },
+  { name:'Kaja-nya',   zone:'Inland',   x:70,  y:100 },
+  /* Zone not yet confirmed with the campaign — shows as "TBD" rather
+     than a guessed Coastal/Central/Inland tag. Map pin position is a
+     placeholder too; move it once the zone is known. */
+  { name:'Tamatoku',   zone:'TBD',      x:170, y:140 }
 ];
 
 /* The six Charter issues, offered for ranking. */

@@ -429,18 +429,31 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .hero-portrait{ position:relative; animation:portraitIn 1.5s var(--ease) .3s both; }
 @keyframes portraitIn{ from{ opacity:0; transform:translateY(40px) scale(.96); } }
 /* Soft curved panel that separates the right column from the left */
+/* Flag-band backdrop, peeking out around the portrait arch — three bands
+   (green / white / red, matching the reference photo, no black), standing
+   in for a background-swapped photo. A clean subject cutout isn't possible
+   here: in the source photo, Frank's white shirt and the studio backdrop
+   converge to the identical pixel value (253,253,253) at the bottom of the
+   frame, so a colour-based cutout would tear a hole through his arm rather
+   than remove the background. This gets the same "portrait in front of the
+   party colours" read without touching the photo. Also finally gives this
+   pseudo-element real colour — the old panel was rgba(255,255,255,.055) on
+   what is now a white page, which made it invisible. */
 .hero-portrait::before{
   content:""; position:absolute; z-index:0; pointer-events:none;
-  inset:-7% -14% -8% -8%;
-  border-radius:50% 50% 42% 42% / 44% 44% 32% 32%;
-  background:linear-gradient(200deg,rgba(255,255,255,.055),rgba(255,255,255,.008));
-  border:1px solid rgba(255,255,255,.06);
+  inset:-4% -24% -4% -24%;   /* wide horizontally so straight stripes actually read as stripes */
+  border-radius:28px;        /* rectangular, matching the reference — not a circle */
+  overflow:hidden;
+  background:linear-gradient(90deg,
+    var(--green) 0% 33.33%, #ffffff 33.33% 66.66%, var(--red) 66.66% 100%);
+  box-shadow:0 34px 74px -30px rgba(10,11,11,.45);
 }
-/* Concentric red ring, echoing the arch */
+/* Thin outline just outside the frame — was arch-shaped to echo the old
+   arch; now a plain rectangle to match .portrait-frame's own shape. */
 .hero-portrait::after{
   content:""; position:absolute; z-index:3; pointer-events:none;
   inset:-15px -15px -15px -15px;
-  border-radius:999px 999px 50px 50px;
+  border-radius:38px;
   border:1px solid rgba(224,94,94,.20);
 }
 
@@ -461,7 +474,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 
 .portrait-frame{
   position:relative; z-index:1;
-  border-radius:999px 999px 36px 36px;   /* arch — half-circle top */
+  border-radius:28px;   /* plain rectangle, matching the flag-band backdrop — arch removed */
   overflow:hidden; aspect-ratio:4/5;
   border:1px solid rgba(224,94,94,.55);          /* thin red outline */
   box-shadow:
@@ -470,8 +483,8 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
     0 0 90px -18px rgba(214,40,40,.30);           /* red halo */
   background:linear-gradient(160deg,rgba(0,107,63,.3),rgba(214,40,40,.14));
 }
-/* 16% keeps the crown clear of the arch curve, which bites in at the sides */
-.portrait-frame img{ width:100%; height:100%; object-fit:cover; object-position:50% 16%; filter:contrast(1.04) saturate(1.05); }
+/* Headroom bias, tuned for a plain rectangular crop (no arch curve to clear) */
+.portrait-frame img{ width:100%; height:100%; object-fit:cover; object-position:50% 10%; filter:contrast(1.04) saturate(1.05); }
 .portrait-frame::after{
   content:""; position:absolute; inset:0;
   background:linear-gradient(to top,rgba(10,11,11,.92) 0%,rgba(10,11,11,.15) 42%,transparent 68%);
