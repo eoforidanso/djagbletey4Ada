@@ -10,10 +10,10 @@ const CAMPAIGN = {
 
   // Digits only, full international format, no "+" and no spaces.
   // Example for Ghana: 233241234567
-  whatsapp:    '233000000000',
+  whatsapp:    '233559468385',
 
   email:       'campaign@example.org',
-  phone:       '+233 XX XXX XXXX',
+  phone:       '0559 468 385 · 0202 390 068',
 
   /* Social accounts. Paste the full URL into `url` and the link goes live.
      Leave url empty and it renders greyed-out and unclickable, so nothing
