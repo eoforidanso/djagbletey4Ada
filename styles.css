@@ -1,12 +1,19 @@
 /* ============================================================
    DJAGBLETEY — Frank Quarshie for Ada
-   Design system: NDC red · green · white, Apple-grade glass
+   Design system: NDC black · red · white · green, Apple-grade glass
    ============================================================ */
 
 :root{
-  /* Brand — NDC red and green replace the earlier purple/gold study */
-  --ink:        #071a10;   /* near-black green — the field's darkest tone */
-  --ink-2:      #0c2617;
+  /* ---- NDC: black · red · white · green ----
+     All four party colours carry weight here. Black is the ground, so green
+     reads as a deliberate colour rather than the ambient tint of everything;
+     white is a real surface (see .sec-light), not just a translucent overlay. */
+  --black:      #0a0b0b;   /* party black — the field's true base */
+  --black-2:    #111314;   /* raised black, panels and bands */
+  --white:      #ffffff;   /* party white — flag band + crisp surfaces */
+
+  --ink:        #0a0b0b;   /* body ground (kept as a name for existing refs) */
+  --ink-2:      #111314;
   --green-deep: #0a3d22;   /* deep party green, background mid-tone */
   --green:      #0f7a3d;   /* base party green */
   --green-lit:  #33c46f;   /* bright green accent / glow */
@@ -21,7 +28,7 @@
 
   /* Neutrals */
   --paper:      #fbf9f6;
-  --paper-dim:  #ece6f2;
+  --paper-dim:  #eef0ee;
   --muted:      rgba(255,255,255,.62);   /* ~6.8:1 on the field */
   --muted-2:    rgba(255,255,255,.52);   /* ~4.9:1 — small labels still clear AA */
 
@@ -72,20 +79,23 @@ button,input,select,textarea{ font:inherit; color:inherit; }
 
 /* ---------- Ambient field ----------
    Four stacked layers, deepest first:
-   1. .field        — deep green → near-black gradient wash (NDC green)
-   2. .orb          — soft colour blooms (green + red)
+   1. .field        — party black ground, faint green cast at the extremes
+   2. .orb          — green + red blooms, read as light ON black
    3. .field::before— woven fabric + salt-crystal lattice
    4. .field::after — film grain + vignette
-   ------------------------------------ */
+
+   The ground is black, not green. When green washed the whole field it stopped
+   registering as a party colour and just became "the background"; against black
+   both green and red read as deliberate. ------------------------------------ */
 .field{
   position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
   background:
     linear-gradient(197deg,
-      #0e3a22 0%,
-      #0a2e1b 22%,
-      #071f14 48%,
-      #071a10 72%,
-      #0c2617 100%);
+      #0d1a13 0%,
+      #0a1310 26%,
+      #0a0b0b 52%,
+      #0a0b0b 74%,
+      #0c1611 100%);
 }
 
 /* Woven texture + faint diamond lattice — depth without clutter.
@@ -104,48 +114,63 @@ button,input,select,textarea{ font:inherit; color:inherit; }
 .field::after{
   content:""; position:absolute; inset:0;
   background:
-    radial-gradient(120% 80% at 50% 0%, transparent 40%, rgba(10,1,16,.85) 100%),
+    radial-gradient(120% 80% at 50% 0%, transparent 40%, rgba(0,0,0,.88) 100%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
   opacity:.5; mix-blend-mode:overlay;
 }
-.orb{ position:absolute; border-radius:50%; filter:blur(90px); opacity:.5; }
-.orb.a{ width:52vw; height:52vw; left:-14vw; top:-12vw; background:radial-gradient(circle,#33c46f,transparent 66%); }
-.orb.b{ width:44vw; height:44vw; right:-12vw; top:22vh; background:radial-gradient(circle,#d21f1f,transparent 66%); opacity:.3; }
-.orb.c{ width:60vw; height:60vw; left:18vw; bottom:-28vw; background:radial-gradient(circle,#006b3f,transparent 68%); opacity:.28; }
+/* Blooms are tuned for a black ground: green pulled back so it lights a corner
+   instead of flooding the page, red lifted so it holds the opposite side. */
+.orb{ position:absolute; border-radius:50%; filter:blur(100px); opacity:.5; }
+.orb.a{ width:48vw; height:48vw; left:-16vw; top:-16vw; background:radial-gradient(circle,#33c46f,transparent 64%); opacity:.34; }
+.orb.b{ width:46vw; height:46vw; right:-14vw; top:20vh; background:radial-gradient(circle,#d21f1f,transparent 64%); opacity:.34; }
+.orb.c{ width:58vw; height:58vw; left:16vw; bottom:-30vw; background:radial-gradient(circle,#0f7a3d,transparent 66%); opacity:.22; }
 
 /* ---------- Layout ---------- */
 .shell{ width:var(--shell); margin-inline:auto; position:relative; z-index:2; }
-section{ position:relative; z-index:2; padding:clamp(96px,12vw,184px) 0; }
+/* Was clamp(96px,12vw,184px): at desktop that stacked 184 bottom + 184 top =
+   368px of empty field between every section, which read as the page having
+   lost its thread. Tightened so sections stay distinct but keep momentum. */
+section{ position:relative; z-index:2; padding:clamp(78px,7.5vw,116px) 0; }
 
 /* ============================================================
    LIGHT SECTIONS
-   Beige/paper blocks that break up the dark. Because every
-   component reads its colours from custom properties, re-declaring
-   the tokens on this one class re-themes everything inside it.
+   The party's white, used as a real surface. Because every component reads
+   its colours from custom properties, re-declaring the tokens on this one
+   class re-themes everything inside it.
+
+   These were warm beige, which read as "paper" rather than as one of the
+   four NDC colours, and left the cards barely separable from the ground.
+   Now: near-white field, white cards, near-black text.
    ============================================================ */
 .sec-light{
-  --muted:      rgba(7,26,16,.72);
-  --muted-2:    rgba(7,26,16,.62);   /* ~5.2:1 on paper */
-  --glass:        rgba(255,255,255,.62);
-  --glass-strong: rgba(255,255,255,.84);
-  --glass-line:   rgba(7,26,16,.10);
-  --glass-line-2: rgba(7,26,16,.17);
+  --muted:      rgba(10,11,11,.74);
+  --muted-2:    rgba(10,11,11,.60);   /* ~5.6:1 on white */
+  --glass:        rgba(255,255,255,.92);
+  --glass-strong: #ffffff;
+  --glass-line:   rgba(10,11,11,.10);
+  --glass-line-2: rgba(10,11,11,.16);
   --red-lit:   var(--red-deep);        /* red must darken on white to stay legible */
 
-  color:#071a10;
-  background:linear-gradient(176deg,#f8f4ed 0%,#efe9f3 58%,#f6f1ea 100%);
+  color:#0a0b0b;
+  /* Near-white with the faintest green/red breath at opposite corners, so it
+     is unmistakably white rather than cream, but not a flat clinical slab. */
+  background:
+    radial-gradient(120% 70% at 8% 0%, rgba(15,122,61,.055), transparent 62%),
+    radial-gradient(100% 65% at 100% 100%, rgba(210,31,31,.045), transparent 62%),
+    linear-gradient(176deg,#fdfdfc 0%,#f7f8f6 56%,#fcfcfb 100%);
   /* wide shallow arc top and bottom — the curved cut between sections */
   border-radius:50% 50% 50% 50% / 78px 78px 78px 78px;
   margin-block:-40px;
-  padding-block:clamp(128px,14vw,210px);
+  padding-block:clamp(104px,10vw,150px);
 }
+/* Cards lift off white with a real shadow instead of relying on tint alone. */
 .sec-light .glass{
-  box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 22px 56px -32px rgba(7,26,16,.38);
+  box-shadow:0 1px 0 rgba(255,255,255,1) inset, 0 18px 44px -26px rgba(10,11,11,.30);
 }
 .sec-light .glass::before{ opacity:0; }          /* specular edge reads wrong on light */
-.sec-light .cand-media img{ border-color:rgba(7,26,16,.12); box-shadow:0 42px 84px -38px rgba(7,26,16,.55); }
-.sec-light .check li:hover{ color:#071a10; }
-.sec-light .check .box{ border-color:rgba(7,26,16,.25); }
+.sec-light .cand-media img{ border-color:rgba(10,11,11,.12); box-shadow:0 42px 84px -38px rgba(10,11,11,.55); }
+.sec-light .check li:hover{ color:#0a0b0b; }
+.sec-light .check .box{ border-color:rgba(10,11,11,.25); }
 .sec-light .check li.done .box svg{ stroke:#fff; }
 .sec-light .check li.done .box{ background:linear-gradient(160deg,var(--red),var(--red-deep)); }
 .sec-light ::selection{ background:var(--green); color:#fff; }
@@ -249,6 +274,27 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   background:var(--red); box-shadow:0 0 12px rgba(210,31,31,.9);
 }
 
+/* ---------- NDC four-band ----------
+   Black · red · white · green, in the order they run down the party flag.
+   Used as a section rule and accent so all four colours have a job on the
+   page rather than only red and green. Ghana's own stripe (below) stays
+   separate and accurate — the two are not interchangeable. */
+.ndc-band{
+  display:flex; height:4px; width:88px; border-radius:4px; overflow:hidden;
+  box-shadow:0 1px 0 rgba(255,255,255,.10) inset;
+}
+.ndc-band i{ flex:1; }
+.ndc-band i:nth-child(1){ background:#0a0b0b; }
+.ndc-band i:nth-child(2){ background:var(--red); }
+.ndc-band i:nth-child(3){ background:var(--white); }
+.ndc-band i:nth-child(4){ background:var(--green); }
+/* On black the first band would vanish — lift it to a visible graphite. */
+.ndc-band i:nth-child(1){ background:#2a2d2e; }
+.sec-light .ndc-band i:nth-child(1){ background:#0a0b0b; }
+.sec-light .ndc-band i:nth-child(3){ box-shadow:0 0 0 1px rgba(10,11,11,.16) inset; }
+.ndc-band.wide{ width:132px; height:5px; }
+.ndc-band.center{ margin-inline:auto; }
+
 /* ---------- Ghana stripe ---------- */
 .gh-stripe{ display:flex; height:3px; border-radius:3px; overflow:hidden; width:64px; }
 .gh-stripe i{ flex:1; }
@@ -256,19 +302,19 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .gh-stripe i:nth-child(2){ background:var(--gh-gold); }
 .gh-stripe i:nth-child(3){ background:var(--gh-green); }
 
-/* ---------- NDC party flag ----------
-   Source photo (images/ndc-flag.jpg) is a near-square crop, not an elongated
-   banner — aspect-ratio matches its real dimensions (193×183) so it's never
+/* ---------- NDC party emblem ----------
+   Source graphic (images/ndc-emblem.png) is a tall crop, not square —
+   aspect-ratio matches its real dimensions (122×149) so it's never
    stretched, and object-fit:cover handles any minor variance. */
 .ndc-flag{
-  width:24px; aspect-ratio:193/183; object-fit:cover;
+  width:24px; aspect-ratio:122/149; object-fit:cover;
   flex:none; display:block; border-radius:6px;
   box-shadow:0 0 0 1px rgba(255,255,255,.35), 0 2px 7px rgba(0,0,0,.5);
 }
 .party-badge{ display:inline-flex; align-items:center; }
 .party-badge-lg{ margin-top:18px; }
 .party-badge-lg .ndc-flag{ width:36px; border-radius:9px; }
-.sec-light .ndc-flag{ box-shadow:0 0 0 1px rgba(7,26,16,.18), 0 2px 7px rgba(7,26,16,.28); }
+.sec-light .ndc-flag{ box-shadow:0 0 0 1px rgba(10,11,11,.18), 0 2px 7px rgba(10,11,11,.28); }
 
 /* ============================================================
    NAV
@@ -278,12 +324,12 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   width:var(--shell); z-index:100; border-radius:100px;
   display:flex; align-items:center; gap:18px;
   padding:9px 9px 9px 20px;
-  background:rgba(7,26,16,.42); border:1px solid transparent;
+  background:rgba(10,11,11,.42); border:1px solid transparent;
   backdrop-filter:saturate(180%) blur(20px); -webkit-backdrop-filter:saturate(180%) blur(20px);
   transition:background .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease), top .5s var(--ease);
 }
 .nav.stuck{
-  background:rgba(7,26,16,.72); border-color:var(--glass-line);
+  background:rgba(10,11,11,.72); border-color:var(--glass-line);
   box-shadow:0 18px 50px -22px rgba(0,0,0,.9), 0 1px 0 rgba(255,255,255,.08) inset;
 }
 .nav-brand{ display:flex; align-items:center; gap:11px; margin-right:auto; }
@@ -296,6 +342,11 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   color:var(--muted); transition:color .3s, background .3s;
 }
 .nav-links a:hover{ color:#fff; background:rgba(255,255,255,.08); }
+.nav-links a.active{ color:#fff; background:rgba(255,255,255,.05); }
+.nav-links a.active::after{
+  content:""; display:block; margin:5px auto 0; width:14px; height:2px; border-radius:2px;
+  background:linear-gradient(90deg,var(--red),var(--red-lit));
+}
 .nav-links .m-cta{ display:none; }   /* mobile-menu CTA — revealed under 900px */
 .nav-cta{ padding:11px 22px; font-size:14px; }
 .nav-burger{ display:none; width:42px; height:42px; border-radius:50%; background:var(--glass-strong); border:1px solid var(--glass-line-2); cursor:pointer; align-items:center; justify-content:center; }
@@ -438,12 +489,12 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .portrait-frame img{ width:100%; height:100%; object-fit:cover; object-position:50% 16%; filter:contrast(1.04) saturate(1.05); }
 .portrait-frame::after{
   content:""; position:absolute; inset:0;
-  background:linear-gradient(to top,rgba(7,26,16,.92) 0%,rgba(7,26,16,.15) 42%,transparent 68%);
+  background:linear-gradient(to top,rgba(10,11,11,.92) 0%,rgba(10,11,11,.15) 42%,transparent 68%);
 }
 .portrait-tag{
   position:absolute; left:18px; right:18px; bottom:18px; z-index:2;
   padding:16px 20px; border-radius:18px;
-  background:rgba(7,26,16,.5); border:1px solid var(--glass-line-2);
+  background:rgba(10,11,11,.5); border:1px solid var(--glass-line-2);
   backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
 }
 .portrait-tag b{ font-family:var(--ff-display); font-size:16px; display:block; letter-spacing:-.02em; }
@@ -473,12 +524,18 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .cd-unit span{ font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted-2); }
 
 /* ---------- Ticker ---------- */
-.ticker{ padding:0; border-block:1px solid var(--glass-line); background:rgba(255,255,255,.025); overflow:hidden; }
+/* Solid party black, so the band separates the hero from the page instead of
+   being one more translucent layer over the field. */
+.ticker{ padding:0; border-block:1px solid rgba(255,255,255,.09); background:var(--black); overflow:hidden; }
 .ticker-track{ display:flex; gap:40px; padding:15px 0; width:max-content; animation:slide 46s linear infinite; }
 .ticker:hover .ticker-track{ animation-play-state:paused; }
 @keyframes slide{ to{ transform:translateX(-50%); } }
 .ticker-track span{ font-family:var(--ff-display); font-size:12.5px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--muted-2); display:flex; align-items:center; gap:40px; white-space:nowrap; }
+/* Separators cycle red → white → green, the flag's colour bands, so the
+   party palette runs quietly through the marquee. */
 .ticker-track span::after{ content:"◆"; color:var(--red); font-size:8px; }
+.ticker-track span:nth-child(3n+2)::after{ color:rgba(255,255,255,.85); }
+.ticker-track span:nth-child(3n+3)::after{ color:var(--green-lit); }
 
 /* ============================================================
    SECTION HEADER
@@ -500,7 +557,18 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
    CANDIDATE
    ============================================================ */
 .cand{ display:grid; grid-template-columns:.85fr 1.15fr; gap:clamp(30px,4vw,64px); align-items:center; }
+.cand h2{ font-size:clamp(38px,5.6vw,68px); }
+
 .cand-media{ position:relative; }
+/* Offset colour card behind the portrait — the frame reads as a deliberate
+   layout choice rather than a floating cutout. Section already establishes
+   its own stacking context (see `section{position:relative;z-index:2}`),
+   so this negative z-index stays contained behind the image, not the page. */
+.cand-media::before{
+  content:""; position:absolute; z-index:-1;
+  inset:22px -22px -22px 22px; border-radius:26px;
+  background:linear-gradient(135deg,var(--red) 0%,var(--red-deep) 100%);
+}
 /* object-position biased to the top: these portraits have only ~6.7% headroom
    above the head in the source, so a centred cover crop decapitates the subject. */
 .cand-media img{
@@ -508,18 +576,53 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   border:1px solid var(--glass-line-2); box-shadow:0 40px 80px -34px rgba(0,0,0,.9);
 }
 .cand-badge{
-  position:absolute; bottom:-20px; right:-20px; padding:18px 22px; border-radius:20px; text-align:center;
+  position:absolute; bottom:18px; left:18px; padding:10px 16px 10px 13px; border-radius:100px;
+  display:inline-flex; align-items:center; gap:8px; max-width:calc(100% - 36px);
 }
-.cand-badge b{ display:block; font-family:var(--ff-display); font-size:24px; font-weight:800; color:var(--red-lit); letter-spacing:-.04em; }
-.cand-badge span{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted-2); }
+.cand-badge-pin{ display:flex; flex:none; color:var(--red-lit); }
+.cand-badge span:last-child{ font-size:11.5px; font-weight:700; letter-spacing:.04em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* ---------- 3R bold anchor ----------
+   The campaign's core framework, promoted from a small corner tag to a full
+   visual strip — three numbered segments joined by a gradient thread. */
+.tri-anchor{ display:flex; gap:0; margin-top:28px; }
+.tri-seg{
+  flex:1; position:relative; padding:14px 16px 14px 0; text-align:left;
+}
+.tri-seg + .tri-seg{ padding-left:20px; }
+.tri-seg:not(:last-child)::after{
+  content:""; position:absolute; top:22px; right:0; width:calc(100% - 4px); height:2px;
+  background:linear-gradient(90deg,var(--red),transparent);
+}
+.tri-no{
+  display:block; font-family:var(--ff-display); font-size:12px; font-weight:800;
+  letter-spacing:.1em; color:var(--red-lit); margin-bottom:6px;
+}
+.tri-seg b{
+  display:block; font-family:var(--ff-serif); font-weight:900; letter-spacing:-.03em;
+  font-size:clamp(19px,2vw,25px);
+}
+
+.cand-statement{
+  margin:22px 0 0; font-family:var(--ff-serif); font-weight:800; font-style:italic;
+  font-size:clamp(19px,2.1vw,25px); line-height:1.42; letter-spacing:-.015em; color:var(--red-lit);
+}
+
 .cand blockquote{
-  margin:30px 0 0; padding:24px 28px; border-radius:20px;
-  border-left:2px solid var(--red);
+  position:relative; margin:30px 0 0; padding:28px 30px 26px 34px; border-radius:20px;
+  border-left:2px solid var(--red); overflow:hidden;
   background:linear-gradient(100deg,rgba(210,31,31,.10),transparent);
   font-family:var(--ff-serif); font-size:clamp(18px,2vw,23px); font-weight:700;
   line-height:1.6; letter-spacing:-.012em; font-style:italic;
 }
+.cand blockquote .qmark{
+  position:absolute; top:-18px; left:14px; font-size:96px; line-height:1; font-style:normal;
+  font-family:var(--ff-serif); font-weight:900; color:var(--red); opacity:.18;
+  pointer-events:none;
+}
 .cand blockquote cite{ display:block; margin-top:12px; font-family:var(--ff-body); font-size:13px; font-weight:400; font-style:normal; color:var(--muted-2); letter-spacing:.04em; }
+
+.cand-cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:32px; }
 
 /* ============================================================
    PILLARS
@@ -652,10 +755,10 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .gal{ border-radius:20px; overflow:hidden; position:relative; aspect-ratio:2/3; border:1px solid var(--glass-line); }
 .gal img{ width:100%; height:100%; object-fit:cover; object-position:50% 15%; transition:transform 1.1s var(--ease), filter .6s; }
 /* The poster is a designed graphic, not a subject — contain it so nothing is cut off. */
-.gal-poster img{ object-fit:contain; object-position:50% 50%; background:#0d0117; }
+.gal-poster img{ object-fit:contain; object-position:50% 50%; background:#0a0b0b; }
 .gal-poster:hover img{ transform:none; }
 .gal:hover img{ transform:scale(1.06); }
-.gal::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top,rgba(7,26,16,.7),transparent 55%); pointer-events:none; }
+.gal::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top,rgba(10,11,11,.7),transparent 55%); pointer-events:none; }
 .gal figcaption{
   position:absolute; left:16px; bottom:14px; z-index:2; font-size:12.5px; font-weight:600;
   letter-spacing:.02em; text-shadow:0 2px 12px rgba(0,0,0,.8);
@@ -777,7 +880,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .toast{
   position:fixed; left:50%; bottom:30px; transform:translate(-50%,140%);
   padding:15px 26px; border-radius:100px; z-index:200;
-  background:rgba(7,26,16,.86); border:1px solid rgba(210,31,31,.4);
+  background:rgba(10,11,11,.86); border:1px solid rgba(210,31,31,.4);
   backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
   font-size:14px; font-weight:500; box-shadow:0 20px 50px -18px rgba(0,0,0,.9);
   transition:transform .7s var(--ease); max-width:88vw; text-align:center;
@@ -800,7 +903,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   }
   .nav-links{
     position:absolute; top:calc(100% + 10px); left:0; right:0; flex-direction:column; gap:4px;
-    padding:14px; border-radius:26px; background:rgba(7,26,16,.94);
+    padding:14px; border-radius:26px; background:rgba(10,11,11,.94);
     border:1px solid var(--glass-line); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
     box-shadow:0 26px 60px -24px rgba(0,0,0,.95);
     opacity:0; pointer-events:none; transform:translateY(-10px) scale(.98);
@@ -877,7 +980,15 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   .hero-seal{ width:108px; height:108px; margin-bottom:22px; }
   /* tightened so the kicker holds one line at 375px */
   .hero-kicker{ font-size:13px; letter-spacing:.13em; margin-bottom:14px; }
-  .cand-badge{ right:auto; left:14px; bottom:-16px; }
+  .cand-badge{ left:14px; bottom:14px; }
+  /* Stack the 3R anchor into a clean vertical list rather than an
+     uneven 2+1 wrap — three short rows read better than a cramped row. */
+  .tri-anchor{ flex-direction:column; gap:14px; }
+  .tri-seg,.tri-seg + .tri-seg{ padding:0 0 14px; border-bottom:1px solid var(--glass-line-2); }
+  .tri-seg:last-child{ border-bottom:0; padding-bottom:0; }
+  .tri-seg:not(:last-child)::after{ display:none; }
+  .tri-seg{ display:flex; align-items:baseline; gap:12px; }
+  .tri-no{ margin-bottom:0; }
   .cd-unit{ min-width:auto; }
   .kakepami{ right:8px; top:14px; font-size:12.5px; padding:9px 16px; }
   .footer{ padding:64px 0 36px; }

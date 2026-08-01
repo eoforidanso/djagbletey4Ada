@@ -8,7 +8,7 @@ Works from any web host, or from a USB stick.
 
 ```
 index.html    structure and copy
-styles.css    design system (deep aubergine + Songor gold, glassmorphism)
+styles.css    design system (NDC black · red · white · green, glassmorphism)
 app.js        all content + interactivity — THIS IS THE FILE YOU EDIT
 images/       candidate photography and the campaign seal
 ```
@@ -28,19 +28,20 @@ Then open <http://localhost:4173>.
 
 ---
 
-## ⚠️ Before this goes live — five things to fill in
+## ⚠️ Before this goes live — what is still unset
 
 Everything below lives in the `CAMPAIGN` block at the top of **`app.js`**.
 
-| What | Current value | Action |
+| What | Current value | Status |
 |---|---|---|
-| WhatsApp number | `233000000000` | **Required.** Digits only, no `+`, no spaces. e.g. `233241234567` |
-| Email | `campaign@example.org` | Replace with the real campaign address |
-| Phone | `+233 XX XXX XXXX` | Replace with the office line |
-| Socials | all `url: ''` | Paste each full profile URL — see below |
-| Pledge seed | `1284` | Starting number for the public counter. Set it honestly. |
+| WhatsApp number | `233559468385` | ✅ Set (0559 468 385) |
+| Phone | `0559 468 385 · 0202 390 068` | ✅ Set — both lines shown |
+| Email | `campaign@example.org` | ❌ **Placeholder.** Replace with the real address |
+| Socials | all `url: ''` | ❌ **Unset.** Paste each full profile URL — see below |
+| Pledge seed | `1284` | ⚠️ Invented. Set it to a number you can stand behind |
 
-Until the WhatsApp number is set, every "send" button opens a chat to a non-existent number.
+The pledge seed is the number the public counter starts from. It ships as a made-up
+figure — set it honestly or set it to `0`, because it is a public claim about support.
 
 ### Social links
 
@@ -122,20 +123,37 @@ present it as a constituency boundary map.
 
 ## Design notes
 
-- **Deep aubergine + gold** taken from the campaign seal; Ghana's red-gold-green appears
-  as a restrained accent rather than a theme.
+- **All four NDC colours — black, red, white, green — carry weight.** Black is the
+  ground (`--black: #0a0b0b`), not a green-black. That matters: when green washed the
+  whole field it stopped reading as a party colour and just became "the background."
+  Against black, the green and red blooms (`.orb`) read as deliberate. Ghana's own
+  red-gold-green stripe (`.gh-stripe`) is kept separate and accurate — it is the
+  national flag, not the party's, and the two are not interchangeable.
+
+- **The four-band motif** (`.ndc-band`) is black · red · white · green in the order they
+  run down the party flag. It appears under the Charter heading and in the footer.
+  The first band lifts to graphite on dark grounds, where true black would vanish.
+
 - **Glassmorphism** via `backdrop-filter` with specular top edges on every panel, over a
   soft aurora field. Degrades to flat translucent panels on older browsers.
 
-- **Light sections break up the dark.** "The Candidate" and "Be ready" are `.sec-light` —
-  soft beige/paper blocks with a wide shallow arc top and bottom (the curved cut between
-  sections). Because every component reads its colours from custom properties, that one
-  class re-declares the tokens and re-themes everything inside it — no component-level
-  overrides. Note gold **darkens to `#8a6414`** inside light sections; the bright gold is
-  illegible on beige. To make another section light, just add `class="sec-light"`.
+- **Light sections are the party's white.** "The Candidate" and "Be ready" are
+  `.sec-light` — near-white blocks with a wide shallow arc top and bottom (the curved cut
+  between sections). Because every component reads its colours from custom properties,
+  that one class re-declares the tokens and re-themes everything inside it — no
+  component-level overrides. Note red **darkens to `--red-deep`** inside light sections;
+  the bright red is illegible on white. To make another section light, add
+  `class="sec-light"`. These were warm beige until the palette audit — beige read as
+  "paper" rather than as one of the four party colours, and left cards barely separable
+  from the ground.
 
-- **The portrait** is an arch (`border-radius: 999px 999px 36px 36px`) with a hairline gold
-  outline, a concentric gold ring, a blurred purple/gold aura behind the subject, and a
+- **Vertical rhythm.** Section padding is `clamp(78px, 7.5vw, 116px)`. It was
+  `clamp(96px, 12vw, 184px)`, which stacked 184 bottom + 184 top = **368px of empty
+  field between every section** at desktop — the page lost its thread between ideas.
+  If you raise it, check the gap between two adjacent dark sections, not just one.
+
+- **The portrait** is an arch (`border-radius: 999px 999px 36px 36px`) with a hairline red
+  outline, a concentric ring, a blurred green/red aura behind the subject, and a
   deep soft drop shadow — so it sits *in* the layout rather than on top of it. A curved
   translucent panel behind the right column forms the diagonal/curved break from the
   left-hand copy.
@@ -157,7 +175,7 @@ present it as a constituency boundary map.
   that**, because the countdown and buttons are what get pushed off.
 
 - **Contrast is audited, not eyeballed.** Every secondary text colour clears WCAG AA:
-  the darkest is 5.15:1 (citation on paper), most sit at 5.6–7.7:1. `--muted-2` was
+  the darkest is 5.10:1 (small labels on white), most sit at 5.7–8.5:1. `--muted-2` was
   lifted from .42 → .52 on dark and set to .62 on light to get there. If you dim these
   tokens for aesthetics, you will drop below AA.
 - **Type — two voices.** The system is deliberate about which typeface speaks when:
@@ -178,7 +196,7 @@ present it as a constituency boundary map.
   Two details worth knowing if you edit the slogan: the hero lines sit inside
   `overflow:hidden` masks for the slide-up animation, so `.l` carries a
   `padding-bottom`/negative-margin pair to stop Playfair's descenders (the "p" in
-  *Represent*) being clipped. And the gold kicker uses `font-variant-caps:all-small-caps`
+  *Represent*) being clipped. And the red kicker uses `font-variant-caps:all-small-caps`
   with an uppercase `@supports` fallback, tightened at ≤560px so it holds one line on a
   375px phone.
 
@@ -192,7 +210,7 @@ present it as a constituency boundary map.
 | Width | Behaviour |
 |---|---|
 | ≤1080px | Stats and pillars drop to 2 columns; readiness cards to 1 |
-| **≤900px** | Hero portrait stacks **under** the slogan. Nav collapses to a burger menu with 57px tap targets and a gold "Join the campaign" CTA inside the panel. All two-column sections go single-column; the sticky mandate card unsticks. |
+| **≤900px** | Hero portrait stacks **under** the slogan. Nav collapses to a burger menu with 57px tap targets and a red "Join the campaign" CTA inside the panel. All two-column sections go single-column; the sticky mandate card unsticks. |
 | **≤560px** | Shell goes full-bleed with **22px gutters** (was 15px) — text now sits 48px from the screen edge. **All buttons go full-width** and hero actions stack vertically. Card padding 30/26. Decorative eyebrow rule hidden so wrapped labels stay flush left. |
 | ≤360px | Gutters tighten to 18px and card padding to 26/22 for small handsets |
 

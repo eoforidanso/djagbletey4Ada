@@ -179,6 +179,25 @@ $$('#navLinks a').forEach(a => a.addEventListener('click', () => {
   burger.setAttribute('aria-expanded', 'false');
 }));
 
+/* Active-section highlight — tracks which section is in view so the nav
+   always shows where you are, not just a static list of links. */
+{
+  const navLinks = $$('#navLinks a[href^="#"]:not(.m-cta)');
+  const sections = navLinks
+    .map(a => document.getElementById(a.getAttribute('href').slice(1)))
+    .filter(Boolean);
+
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const id = e.target.id;
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
+    });
+  }, { rootMargin:'-45% 0px -50% 0px', threshold:0 });
+
+  sections.forEach(s => spy.observe(s));
+}
+
 /* ============================================================
    Countdown
    ============================================================ */
