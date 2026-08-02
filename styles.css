@@ -428,77 +428,40 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 /* Portrait */
 .hero-portrait{ position:relative; animation:portraitIn 1.5s var(--ease) .3s both; }
 @keyframes portraitIn{ from{ opacity:0; transform:translateY(40px) scale(.96); } }
-/* Soft curved panel that separates the right column from the left */
-/* Flag-band backdrop, peeking out around the portrait arch — three bands
-   (green / white / red, matching the reference photo, no black), standing
-   in for a background-swapped photo. A clean subject cutout isn't possible
-   here: in the source photo, Frank's white shirt and the studio backdrop
-   converge to the identical pixel value (253,253,253) at the bottom of the
-   frame, so a colour-based cutout would tear a hole through his arm rather
-   than remove the background. This gets the same "portrait in front of the
-   party colours" read without touching the photo. Also finally gives this
-   pseudo-element real colour — the old panel was rgba(255,255,255,.055) on
-   what is now a white page, which made it invisible. */
-.hero-portrait::before{
-  content:""; position:absolute; z-index:0; pointer-events:none;
-  /* Horizontal spread is fixed px, not %, on purpose. The hero-grid's gap
-     between columns is a constant 40px regardless of viewport — but a
-     percentage inset grows with the portrait column's own width (363px at
-     901px viewport, up to 524px once the shell hits its 1180px cap), so it
-     eats into that fixed gap faster than the gap can accommodate. At -24%
-     this reached ~100px past the frame at 1024px wide — well past the text
-     column's edge. Even the "safer" -8% still overlapped by 2px at the
-     shell's capped width (524px column, checked at both 1283px and 1400px
-     viewport — identical result, because the column stops growing there).
-     A fixed offset doesn't have this failure mode: -24px leaves a real
-     16px of the 40px gap free at every desktop width, checked. */
-  inset:-4% -24px -4% -24px;
-  border-radius:28px;        /* rectangular, matching the reference — not a circle */
-  overflow:hidden;
-  background:linear-gradient(90deg,
-    var(--green) 0% 33.33%, #ffffff 33.33% 66.66%, var(--red) 66.66% 100%);
-  box-shadow:0 34px 74px -30px rgba(10,11,11,.45);
-}
-/* Thin outline just outside the frame — was arch-shaped to echo the old
-   arch; now a plain rectangle to match .portrait-frame's own shape. */
-.hero-portrait::after{
-  content:""; position:absolute; z-index:3; pointer-events:none;
-  inset:-15px -15px -15px -15px;
-  border-radius:38px;
-  border:1px solid rgba(224,94,94,.20);
-}
+/* The flag now lives in the photograph itself (images/frank-hero-flag.jpg —
+   subject cut out by edge-seeded flood fill and composited onto green/white/
+   red). Everything that used to fake that effect in CSS is gone: the band
+   backdrop, the outer ring, and the coloured aura. Stacking a CSS glow on
+   top of real flag colours only muddied them. */
 
-/* Glow behind the subject */
-/* Same de-intensifying as .hero-copy::before, same reason: this glowed
-   against black at .58/.32 opacity; on white it would print as a green and
-   red stain around the portrait rather than a glow behind it. */
+/* Soft ambient lift so the portrait sits on the page rather than floating —
+   neutral, so it never tints the flag behind the subject. */
 .portrait-aura{
   position:absolute; z-index:0; pointer-events:none;
-  inset:-12% -8% -4%;
-  background:
-    radial-gradient(circle at 50% 36%, rgba(0,107,63,.16), transparent 62%),
-    radial-gradient(circle at 60% 74%, rgba(214,40,40,.10), transparent 60%);
-  filter:blur(54px);
-  animation:auraPulse 9s var(--ease-io) infinite;
+  inset:-6% -4% -3%;
+  background:radial-gradient(ellipse at 50% 60%, rgba(10,11,11,.16), transparent 68%);
+  filter:blur(46px);
 }
-@keyframes auraPulse{ 50%{ transform:scale(1.05); opacity:.82; } }
 
+/* No border. The old 1px red outline sat directly against the photo's grey
+   studio backdrop and read as a grey/pink frame line around the image —
+   that is the "grey border" this was asked to lose. With the flag now inside
+   the photo, any outline just interrupts the colour. Shadow alone lifts it. */
 .portrait-frame{
   position:relative; z-index:1;
-  border-radius:28px;   /* plain rectangle, matching the flag-band backdrop — arch removed */
+  border-radius:24px;
   overflow:hidden; aspect-ratio:4/5;
-  border:1px solid rgba(224,94,94,.55);          /* thin red outline */
-  box-shadow:
-    0 1px 0 rgba(255,255,255,.14) inset,
-    0 54px 120px -38px rgba(0,0,0,.96),            /* soft drop shadow */
-    0 0 90px -18px rgba(214,40,40,.30);           /* red halo */
-  background:linear-gradient(160deg,rgba(0,107,63,.3),rgba(214,40,40,.14));
+  box-shadow:0 40px 90px -34px rgba(10,11,11,.42);
 }
-/* Headroom bias, tuned for a plain rectangular crop (no arch curve to clear) */
-.portrait-frame img{ width:100%; height:100%; object-fit:cover; object-position:50% 10%; filter:contrast(1.04) saturate(1.05); }
+/* 50% 6%: the composited hero is framed tighter than the original studio
+   file, so it needs less top bias to keep the crown clear. */
+.portrait-frame img{ width:100%; height:100%; object-fit:cover; object-position:50% 6%; }
+/* Scrim only across the very bottom, sized to the caption card that sits on
+   it. It used to run 68% up the frame to lift text off a dark hero; over the
+   flag that just greyed out most of the green and red. */
 .portrait-frame::after{
-  content:""; position:absolute; inset:0;
-  background:linear-gradient(to top,rgba(10,11,11,.92) 0%,rgba(10,11,11,.15) 42%,transparent 68%);
+  content:""; position:absolute; inset:auto 0 0 0; height:34%;
+  background:linear-gradient(to top,rgba(10,11,11,.82) 0%,rgba(10,11,11,.35) 45%,transparent 100%);
 }
 /* This card always sits over a photo + dark scrim (.portrait-frame::after),
    regardless of whether the section around it is light or dark — so unlike
@@ -583,24 +546,32 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .cand h2{ font-size:clamp(38px,5.6vw,68px); }
 
 .cand-media{ position:relative; }
-/* Offset colour card behind the portrait — the frame reads as a deliberate
-   layout choice rather than a floating cutout. Section already establishes
-   its own stacking context (see `section{position:relative;z-index:2}`),
-   so this negative z-index stays contained behind the image, not the page. */
+/* Flag rule down the outer edge — green/white/red, the same three colours the
+   hero photograph now carries, so the two sections rhyme. This replaces a
+   solid red slab that sat offset behind the photo: at this size that read as
+   a printing misregistration rather than a design choice, and it fought the
+   red CTA buttons directly below it for attention. A thin rule anchors the
+   photo just as firmly without competing. */
 .cand-media::before{
-  content:""; position:absolute; z-index:-1;
-  inset:22px -22px -22px 22px; border-radius:26px;
-  background:linear-gradient(135deg,var(--red) 0%,var(--red-deep) 100%);
+  content:""; position:absolute; z-index:1;
+  left:-14px; top:34px; bottom:34px; width:6px; border-radius:6px;
+  background:linear-gradient(180deg,
+    var(--green) 0% 33.33%, #ffffff 33.33% 66.66%, var(--red) 66.66% 100%);
+  box-shadow:0 0 0 1px rgba(10,11,11,.07);
 }
 /* object-position biased to the top: these portraits have only ~6.7% headroom
    above the head in the source, so a centred cover crop decapitates the subject. */
 .cand-media img{
-  border-radius:26px; aspect-ratio:4/5; object-fit:cover; object-position:50% 8%;
-  border:1px solid var(--glass-line-2); box-shadow:0 40px 80px -34px rgba(0,0,0,.9);
+  border-radius:20px; aspect-ratio:4/5; object-fit:cover; object-position:50% 8%;
+  /* No border. The 1px light outline sat against this photo's grey studio
+     backdrop and read as a second, muddier frame line just inside the real
+     edge. Shadow alone separates it from the off-white band. */
+  box-shadow:0 34px 70px -30px rgba(10,11,11,.40);
 }
 .cand-badge{
   position:absolute; bottom:18px; left:18px; padding:10px 16px 10px 13px; border-radius:100px;
   display:inline-flex; align-items:center; gap:8px; max-width:calc(100% - 36px);
+  z-index:2;
 }
 .cand-badge-pin{ display:flex; flex:none; color:var(--red-lit); }
 .cand-badge span:last-child{ font-size:11.5px; font-weight:700; letter-spacing:.04em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -1047,6 +1018,13 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   .hero-portrait{ max-width:400px; margin-inline:auto; width:100%; }
 
   .cand,.ranker,.comm,.join{ grid-template-columns:1fr; }
+  /* Single column: the photo now spans the full gutter-to-gutter width, so a
+     rule hanging 14px off its left edge would sit in the page gutter or clip.
+     Move it inside the frame. */
+  .cand-media::before{ left:0; top:auto; bottom:0; width:100%; height:6px;
+    background:linear-gradient(90deg,
+      var(--green) 0% 33.33%, #ffffff 33.33% 66.66%, var(--red) 66.66% 100%); }
+  .cand-badge{ bottom:26px; }
   .mandate{ position:static; }
   .gallery{ grid-template-columns:repeat(2,1fr); }
   .cd-units{ margin-left:0; width:100%; justify-content:space-between; gap:12px; }
