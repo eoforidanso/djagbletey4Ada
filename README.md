@@ -1,7 +1,7 @@
 # DJAGBLETEY — Frank Quarshie for Ada
 
 Campaign site for **Frank Quarshie Djagbletey**, Ada Constituency, Greater Accra Region, Ghana.
-*Return · Rebuild · Represent · …Kakepami!*
+*Return · Rebuild · Represent · …Kakepeemi!*
 
 Static site — three files, no build step, no backend, no dependencies to install.
 Works from any web host, or from a USB stick.

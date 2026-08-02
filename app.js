@@ -261,7 +261,7 @@ setInterval(tick, 1000);
    Ticker
    ============================================================ */
 {
-  const words = [...COMMUNITIES.map(c => c.name), 'Kakepami!', 'Return', 'Rebuild', 'Represent'];
+  const words = [...COMMUNITIES.map(c => c.name), 'Kakepeemi!', 'Return', 'Rebuild', 'Represent'];
   const line = () => `<span>${words.join('</span><span>')}</span>`;
   $('#ticker').innerHTML = line() + line();   // doubled for a seamless loop
 }
@@ -375,7 +375,7 @@ $('#sendMandate').addEventListener('click', () => {
     `*My mandate for Ada*\n\n${lines}\n\n` +
     (name ? `From: ${name}\n` : '') +
     (comm ? `Community: ${comm}\n` : '') +
-    `\nReturn. Rebuild. Represent. …Kakepami!`;
+    `\nReturn. Rebuild. Represent. …Kakepeemi!`;
   window.open(waLink(msg), '_blank', 'noopener');
 });
 
@@ -508,7 +508,7 @@ $('#pledgeForm').addEventListener('submit', (e) => {
     `Name: ${name}\nPhone: ${phone}\nCommunity: ${comm}\nHelping with: ${role}\n` +
     top +
     (note ? `\n\nWhat Ada needs first:\n${note}` : '') +
-    `\n\nReturn. Rebuild. Represent. …Kakepami!`;
+    `\n\nReturn. Rebuild. Represent. …Kakepeemi!`;
 
   pledges += 1;
   store.set('pledges', pledges);
@@ -626,7 +626,7 @@ function drawCard(){
 
   ctx.fillStyle = 'rgba(255,255,255,.45)';
   ctx.font = '500 22px Lato, sans-serif';
-  ctx.fillText(`${CAMPAIGN.candidate}  ·  …Kakepami!`, W / 2, 946);
+  ctx.fillText(`${CAMPAIGN.candidate}  ·  …Kakepeemi!`, W / 2, 946);
 }
 
 $('#pName').addEventListener('input', drawCard);
@@ -642,7 +642,7 @@ $('#dlCard').addEventListener('click', () => {
 });
 
 $('#shareCard').addEventListener('click', async () => {
-  const text = `I stand with Ada. Return. Rebuild. Represent. …Kakepami! — ${CAMPAIGN.candidate}`;
+  const text = `I stand with Ada. Return. Rebuild. Represent. …Kakepeemi! — ${CAMPAIGN.candidate}`;
   try {
     const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
     const file = new File([blob], 'i-stand-with-ada.png', { type:'image/png' });
