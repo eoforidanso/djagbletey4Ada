@@ -98,7 +98,7 @@ const CHARTER_STATUS = [
   { no:'02', title:'Hold the shoreline',           state:'pending', note:'' },
   { no:'03', title:'The estuary economy',          state:'pending', note:'' },
   { no:'04', title:'Ada as a destination',         state:'pending', note:'' },
-  { no:'05', title:'Work for young Ada',           state:'pending', note:'' },
+  { no:'05', title:"Work for Ada's Youth",         state:'pending', note:'' },
   { no:'06', title:'The basics, done properly',    state:'pending', note:'' }
 ];
 
