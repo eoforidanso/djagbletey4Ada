@@ -447,8 +447,19 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
    studio backdrop and read as a grey/pink frame line around the image —
    that is the "grey border" this was asked to lose. With the flag now inside
    the photo, any outline just interrupts the colour. Shadow alone lifts it. */
+/* Party black frame. This is the fourth NDC colour — the photograph already
+   carries green, white and red, so the border completes the set rather than
+   just outlining the image.
+   Deliberately a real border, not a box-shadow ring: box-sizing is border-box
+   globally, so the border grows inward and the element's outer footprint is
+   unchanged. A ring would push the visual edge outward into the 40px grid gap
+   the hero column was tuned against.
+   Note this is NOT a return of the outline removed earlier — that was a 1px
+   line sitting against the photo's grey studio backdrop, which read as a grey
+   frame. Against the flag colours a deliberate black band reads as intended. */
 .portrait-frame{
   position:relative; z-index:1;
+  border:10px solid var(--black);
   border-radius:24px;
   overflow:hidden; aspect-ratio:4/5;
   box-shadow:0 40px 90px -34px rgba(10,11,11,.42);
@@ -1070,6 +1081,9 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   .countdown{ padding:24px 26px; gap:20px; }
   .cand blockquote{ padding:26px 24px; }
   .portrait-tag{ left:14px; right:14px; bottom:14px; padding:16px 18px; }
+  /* 10px against a ~330px-wide frame is proportionally about 60% heavier
+     than it reads on desktop — thinned so the frame stays a frame. */
+  .portrait-frame{ border-width:7px; border-radius:20px; }
 
   .lede,.pillar p,.stat p{ line-height:1.72; }
   .sec-head{ margin-bottom:38px; }
