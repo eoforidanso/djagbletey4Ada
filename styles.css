@@ -64,7 +64,11 @@
 
 *,*::before,*::after{ box-sizing:border-box; }
 
-html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+/* scroll-padding-top keeps anchored targets clear of the fixed nav. Without
+   it every in-page link — the nav itself, the new About Ada -> Charter card
+   links, "See where each one stands" — drops the target underneath the nav
+   pill. Nav is --nav-h tall sitting 14px from the top, plus breathing room. */
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; scroll-padding-top:calc(var(--nav-h) + 34px); }
 
 body{
   margin:0;
@@ -546,9 +550,42 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
    STATS
    ============================================================ */
 .stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-.stat{ padding:30px 26px; border-radius:22px; }
-.stat b{ display:block; font-family:var(--ff-display); font-size:clamp(30px,3.6vw,42px); font-weight:800; letter-spacing:-.045em; color:var(--red-lit); font-variant-numeric:tabular-nums; }
+/* Each card is now a link to the commitment that answers it — the section
+   claims "every one of those is a policy question" and previously never
+   connected to the policy. Whole card is the target, not just the label,
+   so it stays a comfortable tap size on a phone. */
+.stat{
+  padding:28px 26px 24px; border-radius:22px;
+  display:flex; flex-direction:column;
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease), border-color .35s;
+}
+.stat:hover{ transform:translateY(-4px); border-color:var(--glass-line-2); }
+.stat-tag{
+  display:block; margin-bottom:9px;
+  font-family:var(--ff-display); font-size:11px; font-weight:800;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--red-lit);
+}
+/* Was a numeral slot: clamp(30px,3.6vw,42px) with tabular-nums and -.045em
+   tracking. But it holds place names, and at 42px "Asafotufiami" measured
+   254px inside a 231px content box — a single word, so it cannot wrap, and
+   .glass clips overflow. The name was being cut off on every desktop load.
+   Sized to the h3 card-title scale, which is what this component actually
+   is; the red accent moved up to .stat-tag so the hierarchy still reads. */
+.stat b{
+  display:block; font-family:var(--ff-display);
+  font-size:clamp(21px,2.2vw,26px); font-weight:800; letter-spacing:-.025em;
+  line-height:1.2; color:var(--charcoal);
+}
 .stat p{ margin:10px 0 0; font-size:14px; color:var(--muted); line-height:1.72; }
+/* margin-top:auto pins this to the card bottom so the four links align
+   across the row regardless of how long each description runs. */
+.stat-go{
+  margin-top:auto; padding-top:18px;
+  display:inline-flex; align-items:center; gap:7px;
+  font-family:var(--ff-display); font-weight:700; font-size:13px; color:var(--green-deep);
+}
+.stat-go i{ font-style:normal; transition:transform .4s var(--ease); }
+.stat:hover .stat-go i{ transform:translateX(4px); }
 
 /* ============================================================
    CANDIDATE
