@@ -66,18 +66,18 @@ const COMMUNITIES = [
   { name:'Tamatoku',   zone:'TBD',      x:170, y:140 }
 ];
 
-/* The six Charter issues, offered for ranking. */
+/* The Charter issues, offered for ranking. */
 const ISSUES = [
+  { id:'farming', label:'Farming & irrigation',   note:'Inputs, markets and water for Ada farmers' },
+  { id:'schools', label:'Schools & teachers',     note:'Classrooms, furniture and teacher housing' },
+  { id:'jobs',    label:'Jobs for young people',  note:'Skills hub, apprenticeships, start-up capital' },
   { id:'songor',  label:'Songor salt rights',     note:'Community access, transparent leases, real royalties' },
   { id:'sea',     label:'Sea defence',            note:'Protect Totope, Azizanya and the Ada shoreline' },
   { id:'fishing', label:'Fishing & the estuary',  note:'Cold chain, gear, fair rules, support for processors' },
-  { id:'jobs',    label:'Jobs for young people',  note:'Skills hub, apprenticeships, start-up capital' },
   { id:'tourism', label:'Tourism & Asafotufiami', note:'Keep visitor money in Ada hands' },
   { id:'water',   label:'Water & sanitation',     note:'Potable water where the groundwater is saline' },
   { id:'health',  label:'Health facilities',      note:'Staff, supplies and referral transport' },
-  { id:'roads',   label:'Roads & transport',      note:'Feeder roads maintained on a published schedule' },
-  { id:'schools', label:'Schools & teachers',     note:'Classrooms, furniture and teacher housing' },
-  { id:'farming', label:'Farming & irrigation',   note:'Inputs, markets and water for Ada farmers' }
+  { id:'roads',   label:'Roads & transport',      note:'Feeder roads maintained on a published schedule' }
 ];
 
 /* Charter accountability tracker — the "Hold me to it" section.
@@ -94,12 +94,14 @@ const ISSUES = [
    note:   optional one-line status shown under the title. Keep it plain
            and specific: a date, a stage, or the actual obstacle. */
 const CHARTER_STATUS = [
-  { no:'01', title:'Songor: salt is a birthright', state:'pending', note:'' },
-  { no:'02', title:'Hold the shoreline',           state:'pending', note:'' },
-  { no:'03', title:'The estuary economy',          state:'pending', note:'' },
-  { no:'04', title:'Ada as a destination',         state:'pending', note:'' },
-  { no:'05', title:"Work for Ada's Youth",         state:'pending', note:'' },
-  { no:'06', title:'The basics, done properly',    state:'pending', note:'' }
+  { no:'01', title:'Farming that pays',            state:'pending', note:'' },
+  { no:'02', title:'Educate every Ada child',      state:'pending', note:'' },
+  { no:'03', title:"Work for Ada's Youth",         state:'pending', note:'' },
+  { no:'04', title:'Songor: salt is a birthright', state:'pending', note:'' },
+  { no:'05', title:'Hold the shoreline',           state:'pending', note:'' },
+  { no:'06', title:'The estuary economy',          state:'pending', note:'' },
+  { no:'07', title:'Ada as a destination',         state:'pending', note:'' },
+  { no:'08', title:'The basics, done properly',    state:'pending', note:'' }
 ];
 
 const CHARTER_STATE_LABEL = {

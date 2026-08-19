@@ -87,7 +87,8 @@ public status, and each row has its own WhatsApp button that opens a message abo
 specific commitment* — so a constituent can ask "where is the sea defence?" rather than
 sending a vague note about the manifesto.
 
-Maintain it in the **`CHARTER_STATUS`** array in `app.js`. Set each row's `state` to
+Maintain it in the **`CHARTER_STATUS`** array in `app.js` — it must stay in step with the
+eight pillars in `index.html`; adding a pillar there means adding its row here. Set each row's `state` to
 `pending` / `active` / `done` / `blocked`, and put a plain one-line explanation in `note`
 (a date, a stage, or the actual obstacle). Everything ships as `pending`, which is the
 honest state for a candidate whose term has not started.
