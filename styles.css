@@ -328,7 +328,7 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
    HERO — now white, like every other section. No scoped dark-theme
    token overrides needed any more: white IS the root default, so the
    hero just inherits --muted/--red-lit/--glass etc. same as everywhere
-   else. The countdown bar renders as an ordinary white .glass card.
+   else.
    ============================================================ */
 .hero{
   position:relative; isolation:isolate; overflow:hidden;
@@ -503,19 +503,6 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   animation:bob 4.5s var(--ease-io) infinite;
 }
 @keyframes bob{ 50%{ transform:translateY(-9px) rotate(-2deg); } }
-
-/* Countdown bar */
-.countdown{
-  margin-top:30px; padding:17px 24px; border-radius:20px;
-  display:flex; align-items:center; gap:26px; flex-wrap:wrap;
-  animation:fadeUp 1s var(--ease) .85s both;
-}
-.countdown-label{ font-size:11.5px; letter-spacing:.19em; text-transform:uppercase; color:var(--red-lit); font-weight:700; font-family:var(--ff-display); }
-.countdown-label small{ display:block; color:var(--muted-2); letter-spacing:.03em; text-transform:none; font-size:12px; font-weight:400; margin-top:3px; }
-.cd-units{ display:flex; gap:22px; margin-left:auto; }
-.cd-unit{ text-align:center; min-width:58px; }
-.cd-unit b{ display:block; font-family:var(--ff-display); font-size:clamp(24px,3vw,34px); font-weight:800; letter-spacing:-.04em; font-variant-numeric:tabular-nums; }
-.cd-unit span{ font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted-2); }
 
 /* ---------- Ticker ---------- */
 /* Solid party black, so the band separates the hero from the page instead of
@@ -1124,7 +1111,6 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   .cand-badge{ bottom:26px; }
   .mandate{ position:static; }
   .gallery{ grid-template-columns:repeat(2,1fr); }
-  .cd-units{ margin-left:0; width:100%; justify-content:space-between; gap:12px; }
 
   /* --- Footer centres once the columns stack --- */
   .footer{ text-align:center; }
@@ -1158,7 +1144,6 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   .stat,.pillar,.ready-card,.ranker-pool,.mandate,
   .comm-panel,.ways,.counter,.join-form,.share,.story-vision{ padding:30px 26px; }
   .comm-map{ padding:20px 16px; }
-  .countdown{ padding:24px 26px; gap:20px; }
   .cand blockquote{ padding:26px 24px; }
   .story-body p{ font-size:16px; line-height:1.76; }
   .portrait-tag{ left:14px; right:14px; bottom:14px; padding:16px 18px; }
@@ -1196,7 +1181,6 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   .tri-seg:not(:last-child)::after{ display:none; }
   .tri-seg{ display:flex; align-items:baseline; gap:12px; }
   .tri-no{ margin-bottom:0; }
-  .cd-unit{ min-width:auto; }
   .kakepami{ right:8px; top:14px; font-size:12.5px; padding:9px 16px; }
   .footer{ padding:64px 0 36px; }
 }
@@ -1206,8 +1190,6 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   .shell{ padding-inline:18px; }
   .stat,.pillar,.ready-card,.ranker-pool,.mandate,
   .comm-panel,.ways,.counter,.join-form,.share{ padding:26px 22px; }
-  .cd-units{ gap:6px; }
-  .cd-unit b{ font-size:26px; }
 }
 
 @media (prefers-reduced-motion:reduce){

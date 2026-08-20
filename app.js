@@ -28,9 +28,6 @@ const CAMPAIGN = {
     { name:'YouTube',          icon:'youtube',   url:'', handle:'' }
   ],
 
-  // Ghana general election. Update if the EC sets a different date.
-  electionDate: '2028-12-07T07:00:00+00:00',
-
   // Seeds the public pledge counter so it doesn't start at zero.
   pledgeSeed: 1284
 };
@@ -236,28 +233,6 @@ $$('#navLinks a').forEach(a => a.addEventListener('click', () => {
 
   sections.forEach(s => spy.observe(s));
 }
-
-/* ============================================================
-   Countdown
-   ============================================================ */
-const target = new Date(CAMPAIGN.electionDate).getTime();
-const pad = n => String(n).padStart(2, '0');
-
-function tick(){
-  const diff = target - Date.now();
-  if (diff <= 0){
-    $('#countdown').innerHTML =
-      '<div class="countdown-label">Election day is here<small>Go and vote. Take three people with you.</small></div>';
-    return;
-  }
-  const s = Math.floor(diff / 1000);
-  $('#cdD').textContent = Math.floor(s / 86400);
-  $('#cdH').textContent = pad(Math.floor(s / 3600) % 24);
-  $('#cdM').textContent = pad(Math.floor(s / 60) % 60);
-  $('#cdS').textContent = pad(s % 60);
-}
-tick();
-setInterval(tick, 1000);
 
 /* ============================================================
    Ticker

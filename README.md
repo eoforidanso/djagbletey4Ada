@@ -72,10 +72,6 @@ account belonging to someone else, so every row ships empty for you to fill in.
 
 ## The interactive features
 
-**Countdown** — to 7 December 2028, Ghana's next general election. If the EC sets a
-different date, change `electionDate`. It swaps to an "election day is here" message
-automatically when the date passes.
-
 **Set your own mandate** — visitors pick their top three issues from ten. The site builds
 a ranked mandate card and sends it to the campaign over WhatsApp. This is the site's real
 organising asset: it tells you what each community actually cares about, in their own
@@ -197,7 +193,7 @@ present it as a constituency boundary map.
 - **Hierarchy**: the headline runs at a **6.1:1 size ratio** to the paragraph beneath it,
   so the eye lands on the slogan first. Hero vertical rhythm is tuned so the primary CTA
   stays above the fold on a 900px-tall viewport — **if you enlarge the headline further,
-  re-check that**, because the countdown and buttons are what get pushed off.
+  re-check that**, because the buttons are what get pushed off.
 
 - **Contrast is audited, not eyeballed.** Every secondary text colour clears WCAG AA
   against the refined palette (deep green `#006B3F`, warm red `#D62828`, off-white
