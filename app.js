@@ -12,7 +12,7 @@ const CAMPAIGN = {
   // Example for Ghana: 233241234567
   whatsapp:    '233559468385',
 
-  email:       'campaign@example.org',
+  email:       'Campaign@djagbletey4ada.com',
   phone:       '0559 468 385 · 0202 390 068',
 
   /* Social accounts. Paste the full URL into `url` and the link goes live.
