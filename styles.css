@@ -299,13 +299,26 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .nav-brand img{ width:34px; height:34px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 1px rgba(214,40,40,.6), 0 4px 14px rgba(10,11,11,.25); }
 .nav-brand b{ font-family:var(--ff-display); font-weight:800; font-size:15.5px; letter-spacing:.01em; color:var(--green-deep); }
 .nav-brand span{ display:block; font-size:10px; letter-spacing:.19em; text-transform:uppercase; color:var(--red-lit); font-weight:600; }
-.nav-links{ display:flex; gap:4px; }
+.nav-links{ display:flex; gap:6px; }
 .nav-links a{
-  padding:9px 15px; border-radius:100px; font-size:14px; font-weight:600;
-  color:var(--green-deep); transition:color .3s, background .3s;
+  padding:11px 16px; border-radius:100px; font-size:14px; font-weight:700;
+  letter-spacing:.01em; color:var(--green-deep);
+  transition:color .3s, background .3s, box-shadow .3s, transform .2s var(--ease);
 }
-.nav-links a:hover{ color:var(--green); background:rgba(0,107,63,.08); }
-.nav-links a.active{ color:var(--green); background:rgba(0,107,63,.10); }
+/* Hover: a small lift plus a firmer tint reads as "this is pressable",
+   not just a colour swap. */
+.nav-links a:hover{
+  color:var(--green); background:rgba(0,107,63,.09);
+  transform:translateY(-1px);
+}
+/* Active: the current section gets real weight — a solid-tinted pill with
+   an inset edge (not a drop shadow) so it reads as pressed-in rather than
+   floating, plus the red underline mark carried over from before. */
+.nav-links a.active{
+  color:var(--green-deep); background:rgba(0,107,63,.13);
+  box-shadow:inset 0 0 0 1px rgba(0,107,63,.22), inset 0 1px 3px rgba(0,107,63,.10);
+  transform:none;
+}
 .nav-links a.active::after{
   content:""; display:block; margin:5px auto 0; width:14px; height:2px; border-radius:2px;
   background:linear-gradient(90deg,var(--red),var(--red-lit));
