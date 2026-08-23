@@ -763,6 +763,15 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .pillar li{ font-size:13.5px; color:var(--muted-2); padding:9px 0 9px 20px; position:relative; line-height:1.66; border-top:1px solid rgba(10,11,11,.09); }
 .pillar li::before{ content:""; position:absolute; left:2px; top:17px; width:5px; height:5px; border-radius:50%; background:var(--red); }
 
+/* The four bullets are wrapped in <details> purely so the ≤560px
+   breakpoint below can collapse them — that's where 8 full-height cards
+   stacked to one column make Charter the single longest section on the
+   page. Everywhere else the summary toggle is hidden and the list is
+   forced open via the UA stylesheet override below, so desktop and
+   tablet render exactly as before — nothing here changes above 560px. */
+.pillar-more summary{ display:none; }
+.pillar-more:not([open]) > ul{ display:block; }
+
 /* ============================================================
    ACCOUNTABILITY TRACKER ("Hold me to it")
    The Charter claims to be "written to be checked" — this is the
@@ -1177,7 +1186,10 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   .nav{ left:12px; right:12px; }
 
   body{ font-size:16px; line-height:1.7; }
-  section{ padding:68px 0 72px; }
+  /* Mobile carries 11 full sections in one scroll, so trimmed well below
+     the desktop clamp — was 68/72px, was itself already the tightened
+     value from the desktop rhythm pass documented in the README. */
+  section{ padding:44px 0 48px; }
 
   /* --- Full-width buttons --- */
   .btn{ width:100%; padding:17px 24px; font-size:15.5px; }
@@ -1186,18 +1198,45 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 
   /* --- More padding around text --- */
   .stat,.pillar,.ready-card,.ranker-pool,.mandate,
-  .comm-panel,.ways,.counter,.join-form,.share,.story-vision{ padding:30px 26px; }
+  .comm-panel,.ways,.counter,.join-form,.share,.story-vision{ padding:24px 22px; }
   .comm-map{ padding:20px 16px; }
-  .cand blockquote{ padding:26px 24px; }
-  .story-body p{ font-size:16px; line-height:1.76; }
+  .cand blockquote{ padding:22px 20px; }
+  .story-body p{ font-size:16px; line-height:1.7; margin-bottom:18px; }
   .portrait-tag{ left:14px; right:14px; bottom:14px; padding:16px 18px; }
   /* 10px against a ~330px-wide frame is proportionally about 60% heavier
      than it reads on desktop — thinned so the frame stays a frame. */
   .portrait-frame{ border-width:7px; border-radius:20px; }
 
-  .lede,.pillar p,.stat p{ line-height:1.72; }
-  .sec-head{ margin-bottom:38px; }
-  .sec-head p{ margin-top:16px; }
+  .lede,.pillar p,.stat p{ line-height:1.68; }
+  .sec-head{ margin-bottom:26px; }
+  .sec-head p{ margin-top:12px; }
+  .pillars{ gap:12px; }
+  .pillar{ padding:24px 22px 22px; }
+  .vision-list{ gap:11px; }
+
+  /* Re-enable the native <details> collapse at the one width where 8
+     full-height cards stacked to a column made Charter the longest
+     section on the page (~4,800px). Collapsed by default; the intro
+     paragraph (who/why) still always shows, only the bullet "how" list
+     is behind the tap. */
+  .pillar-more summary{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    margin-top:16px; padding-top:14px; border-top:1px solid rgba(10,11,11,.09);
+    font-size:13.5px; font-weight:700; color:var(--green-deep);
+    cursor:pointer; list-style:none;
+  }
+  .pillar-more summary::-webkit-details-marker{ display:none; }
+  .pillar-more summary i{
+    font-style:normal; width:22px; height:22px; border-radius:50%; flex:none;
+    background:rgba(0,107,63,.10); display:flex; align-items:center; justify-content:center;
+    transition:transform .3s var(--ease);
+  }
+  .pillar-more[open] summary i{ transform:rotate(45deg); }
+  .pillar-more:not([open]) > ul{ display:none; }
+  .pillar-more ul{ margin-top:14px; }
+  .story-refrain{ margin-top:24px; }
+  .story-refrain p{ line-height:1.5; }
+  .story-quote-signed,.story-quote{ margin:20px auto; }
   /* Drop the decorative rule so a wrapped eyebrow stays flush left */
   .eyebrow{ line-height:1.5; }
   .eyebrow::before{ display:none; }
