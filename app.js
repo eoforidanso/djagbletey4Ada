@@ -635,3 +635,20 @@ $('#shareCard').addEventListener('click', async () => {
     if (err?.name !== 'AbortError') toast('Sharing is not available here — try Download instead.');
   }
 });
+
+/* ============================================================
+   PWA — installable app + offline shell
+   ============================================================ */
+if ('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {
+      /* Offline features just don't activate — the site still works as
+         a normal page, so there's nothing to surface to the visitor. */
+    });
+  });
+}
+
+// A supporter who lost signal mid-visit should know why things stopped
+// updating, rather than assume the site broke.
+window.addEventListener('offline', () => toast("You're offline — showing the last loaded version."));
+window.addEventListener('online',  () => toast('Back online.'));
