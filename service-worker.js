@@ -11,8 +11,8 @@
    that is what forces old caches to be dropped on the next visit.
    ============================================================ */
 
-const SHELL_CACHE = 'djagbletey-shell-v1';
-const RUNTIME_CACHE = 'djagbletey-runtime-v1';
+const SHELL_CACHE = 'djagbletey-shell-v2';
+const RUNTIME_CACHE = 'djagbletey-runtime-v2';
 
 /* The minimum needed to render something offline: markup, styles,
    behaviour, the manifest, and the one image (the seal) that appears

@@ -1,0 +1,10 @@
+name = "ada-pledges"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# Create the namespace first:
+#   npx wrangler kv namespace create PLEDGES
+# then paste the id it prints into `id` below.
+[[kv_namespaces]]
+binding = "PLEDGES"
+id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"

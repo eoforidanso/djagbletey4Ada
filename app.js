@@ -28,7 +28,17 @@ const CAMPAIGN = {
     { name:'YouTube',          icon:'youtube',   url:'', handle:'' }
   ],
 
-  // Starting value for the public pledge counter. Keep this honest — it's a
+  /* The pledge counter's backend — the deployed Cloudflare Worker URL, with
+     no trailing slash (e.g. 'https://ada-pledges.YOUR-NAME.workers.dev').
+     See README → "Making the pledge counter real".
+
+     Set it, and the counter shows ONE real total shared by every visitor.
+     Leave it empty, and the counter falls back to a per-device tally that
+     only ever reflects this browser — the number is then not a claim about
+     how many people have pledged, and the caption says so. */
+  pledgeApi: '',
+
+  // Only used by the per-device fallback above. Keep this honest — it's a
   // public claim about support. Set it to an actual collected count if you
   // have one; otherwise leave it at 0.
   pledgeSeed: 0
@@ -447,8 +457,24 @@ $$('.check').forEach(ul => {
 /* ============================================================
    Pledge form → WhatsApp
    ============================================================ */
-const countEl = $('#pledgeCount');
-let pledges = store.get('pledges', CAMPAIGN.pledgeSeed);
+const countEl   = $('#pledgeCount');
+const captionEl = $('#pledgeCaption');
+
+/* Is there a real shared counter behind this, or is it just this browser?
+   Everything below branches on this, including the caption — the number and
+   the words under it must never disagree about what is being counted. */
+let API = (CAMPAIGN.pledgeApi || '').replace(/\/+$/, '');
+
+const CAPTION = {
+  real:  'pledges from supporters across Ada and the diaspora',
+  local: 'pledges counted on this device — not a campaign-wide total'
+};
+
+let pledges = API ? 0 : store.get('pledges', CAMPAIGN.pledgeSeed);
+
+function setCaption(kind){
+  if (captionEl) captionEl.textContent = CAPTION[kind];
+}
 
 function renderCount(to){
   const from = Number(String(countEl.textContent).replace(/\D/g, '')) || 0;
@@ -489,15 +515,55 @@ $('#pledgeForm').addEventListener('submit', (e) => {
     (note ? `\n\nWhat Ada needs first:\n${note}` : '') +
     `\n\nReturn. Rebuild. Represent. …Kakepeemi!`;
 
-  pledges += 1;
-  store.set('pledges', pledges);
-  renderCount(pledges);
+  countPledge();
   drawCard();
   toast('Opening WhatsApp — press send there to reach the campaign.');
   window.open(waLink(msg), '_blank', 'noopener');
 });
 
+/* Record the pledge. With a backend configured this increments the one real
+   shared number; without one it bumps this device's private tally.
+
+   The WhatsApp hand-off is never blocked on the network — the pledge that
+   matters is the message the supporter sends, not the counter. If the
+   increment fails we still move the number locally so the page doesn't feel
+   broken, and the real total corrects itself on the next load. */
+function countPledge(){
+  if (!API){
+    pledges += 1;
+    store.set('pledges', pledges);
+    renderCount(pledges);
+    return;
+  }
+
+  renderCount(pledges + 1);
+
+  fetch(API + '/increment', { method:'POST' })
+    .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+    .then(d => { pledges = Number(d.count) || pledges; renderCount(pledges); })
+    .catch(err => console.warn('[pledges] increment failed:', err.message));
+}
+
+/* Initial paint. Without a backend this is the device tally; with one, the
+   real total is fetched and the placeholder 0 is replaced when it lands. */
+setCaption(API ? 'real' : 'local');
 renderCount(pledges);
+
+if (API){
+  fetch(API + '/count')
+    .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+    .then(d => { pledges = Number(d.count) || 0; renderCount(pledges); })
+    .catch(err => {
+      // The shared total is unreachable. Don't show a number that looks
+      // campaign-wide when it isn't — fall back to the device tally and
+      // relabel it honestly.
+      console.warn('[pledges] count unavailable, falling back to this device:', err.message);
+      API = '';
+      pledges = store.get('pledges', CAMPAIGN.pledgeSeed);
+      setCaption('local');
+      renderCount(pledges);
+    });
+}
 
 /* ============================================================
    Share card (canvas)

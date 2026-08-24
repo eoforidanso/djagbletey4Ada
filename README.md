@@ -38,11 +38,55 @@ Everything below lives in the `CAMPAIGN` block at the top of **`app.js`**.
 | Phone | `0559 468 385 · 0202 390 068` | ✅ Set — both lines shown |
 | Email | `campaign@example.org` | ❌ **Placeholder.** Replace with the real address |
 | Socials | all `url: ''` | ❌ **Unset.** Paste each full profile URL — see below |
-| Pledge seed | `0` | ✅ Set — honest baseline. Replace with a real collected count if/when you have one |
+| Pledge API | `''` | ❌ **Unset.** Until you deploy the counter, the number is per-device only — see below |
+| Pledge seed | `0` | ✅ Set — only used by the per-device fallback |
 
-The pledge seed is the number the public counter starts from. It now ships at `0`,
-because it is a public claim about support — replace it with a real collected figure
-only if you actually have one to stand behind.
+---
+
+## Making the pledge counter real
+
+The counter under the join form used to be a **per-device tally**: it lived in the
+visitor's own `localStorage`, so every visitor saw their own private number. Two
+supporters on two phones each saw "1". It was never a campaign-wide total.
+
+It can now be backed by a real shared number. `worker/` holds a ~60-line Cloudflare
+Worker that stores one integer in KV — free tier, no server to maintain, and the only
+thing it ever stores is that integer. **No supporter data touches it**; names and phone
+numbers still go straight to WhatsApp and are never sent to the website's backend.
+
+Deploy it once:
+
+```bash
+cd frank-quarshie-ada/worker && npx wrangler kv namespace create PLEDGES
+```
+
+Paste the `id` it prints into `wrangler.toml`, then:
+
+```bash
+cd frank-quarshie-ada/worker && npx wrangler deploy
+```
+
+Wrangler prints a URL like `https://ada-pledges.YOUR-NAME.workers.dev`. Put it in
+`CAMPAIGN.pledgeApi` at the top of `app.js`, with **no trailing slash**, and the counter
+is live and shared by everyone.
+
+Two things worth knowing before it ships:
+
+- **The caption changes with the number.** With a backend configured it reads
+  *"pledges from supporters across Ada and the diaspora"*; without one — or if the
+  backend is ever unreachable — it falls back to the device tally and relabels itself
+  *"pledges counted on this device — not a campaign-wide total"*. The number and the
+  words under it can never disagree about what is being counted, which matters on a
+  page whose whole argument is that it is checkable.
+
+- **The counter counts button presses, not verified humans.** Nothing stops someone
+  submitting the form repeatedly, and the Worker has no rate limiting. That's a fine
+  trade for a momentum indicator; it is **not** a figure to quote as verified support
+  in a speech or on a poster. If you need a defensible number, count the WhatsApp
+  messages you actually received — those have phone numbers attached.
+
+Edit `ALLOWED_ORIGINS` in `worker/worker.js` if the site ever serves from a domain
+other than `djagbletey4ada.com`.
 
 ### Social links
 
@@ -108,8 +152,10 @@ Progress saves to the visitor's own device only; nothing is transmitted.
 
 **Pledge form → WhatsApp** — composes a formatted message with the supporter's name,
 phone, community, chosen role, ranked priorities and free-text comment. It *opens*
-WhatsApp with the message ready; the supporter still presses send themselves. No data
-is stored on the website.
+WhatsApp with the message ready; the supporter still presses send themselves. No
+supporter data is stored on the website — submitting only bumps an anonymous counter
+by one (see *Making the pledge counter real*); the name, phone and comment go nowhere
+but WhatsApp.
 
 **Share card** — generates a personalised "I STAND WITH ADA" image on a canvas, with the
 supporter's name, community and ranked priorities. Downloads as PNG, or uses the native
@@ -254,5 +300,11 @@ tablet looks broken, so tablets keep auto-width buttons with the collapsed nav.
 ## Deploying
 
 Any static host works — Netlify, Vercel, GitHub Pages, cPanel. Drag the folder in.
-There is nothing to build and no server-side code, so there is no database to secure and
-no supporter data sitting on a server to leak.
+There is nothing to build, so there is no database to secure and no supporter data
+sitting on a server to leak.
+
+The one deployable piece is `worker/` — the pledge counter, deployed separately to
+Cloudflare (see above). It is optional: leave `pledgeApi` empty and the site works
+exactly as before, with a self-labelling per-device counter. `worker/` is not part of
+the static upload; hosts serve it harmlessly as two unreachable text files, but you can
+exclude it from the upload if you prefer.
