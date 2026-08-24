@@ -7,4 +7,4 @@ compatibility_date = "2025-01-01"
 # then paste the id it prints into `id` below.
 [[kv_namespaces]]
 binding = "PLEDGES"
-id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
+id = "424fdd62dbf24279b722ca49f7e920f3"
