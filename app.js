@@ -28,8 +28,10 @@ const CAMPAIGN = {
     { name:'YouTube',          icon:'youtube',   url:'', handle:'' }
   ],
 
-  // Seeds the public pledge counter so it doesn't start at zero.
-  pledgeSeed: 1284
+  // Starting value for the public pledge counter. Keep this honest — it's a
+  // public claim about support. Set it to an actual collected count if you
+  // have one; otherwise leave it at 0.
+  pledgeSeed: 0
 };
 
 /* Communities across the Ada area.

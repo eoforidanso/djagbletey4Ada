@@ -38,10 +38,11 @@ Everything below lives in the `CAMPAIGN` block at the top of **`app.js`**.
 | Phone | `0559 468 385 · 0202 390 068` | ✅ Set — both lines shown |
 | Email | `campaign@example.org` | ❌ **Placeholder.** Replace with the real address |
 | Socials | all `url: ''` | ❌ **Unset.** Paste each full profile URL — see below |
-| Pledge seed | `1284` | ⚠️ Invented. Set it to a number you can stand behind |
+| Pledge seed | `0` | ✅ Set — honest baseline. Replace with a real collected count if/when you have one |
 
-The pledge seed is the number the public counter starts from. It ships as a made-up
-figure — set it honestly or set it to `0`, because it is a public claim about support.
+The pledge seed is the number the public counter starts from. It now ships at `0`,
+because it is a public claim about support — replace it with a real collected figure
+only if you actually have one to stand behind.
 
 ### Social links
 
