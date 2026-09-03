@@ -620,6 +620,16 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
      edge. Shadow alone separates it from the off-white band. */
   box-shadow:0 34px 70px -30px rgba(10,11,11,.40);
 }
+/* The linocut is a stencil, not a photograph, so it is contained on a paper-white
+   ground rather than cropped to the 4/5 frame — a cover crop would cut off the
+   hand the whole composition rests on. Its carved lines are transparent, which is
+   why the ground has to be painted here and cannot be left to the section tint.
+   height:auto is required: the width/height attributes that keep this from
+   shifting layout on load would otherwise beat the frame's aspect-ratio. */
+.cand-media .cand-ink{
+  width:100%; height:auto; aspect-ratio:4/5;
+  object-fit:contain; background:#fff;
+}
 .cand-badge{
   position:absolute; bottom:18px; left:18px; padding:10px 16px 10px 13px; border-radius:100px;
   display:inline-flex; align-items:center; gap:8px; max-width:calc(100% - 36px);
@@ -676,6 +686,19 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
    prose in a narrower measure than .lede's 62ch — at body width it would
    run too many characters per line for a piece this long.
    ============================================================ */
+/* Ghosted linocut bleeding off the right edge. The story column is centred at
+   680px, so the wider the viewport the further this sits from the text; it grazes
+   the column's right edge around 1180px and is dropped entirely below 1080px,
+   where it would start sitting under running text rather than beside it.
+   #story needs overflow:hidden so the -40px bleed cannot widen the page. */
+#story{ position:relative; overflow:hidden; }
+#story .shell{ position:relative; z-index:1; }
+.story-mark{
+  position:absolute; z-index:0; right:-40px; top:50%; transform:translateY(-50%);
+  height:min(760px,88%); width:auto; opacity:.08; pointer-events:none;
+}
+@media (max-width:1080px){ .story-mark{ display:none; } }
+
 .story-body{ max-width:680px; margin-inline:auto; }
 .story-body p{ font-size:17px; line-height:1.82; color:var(--muted); margin:0 0 22px; }
 .story-body p:last-child{ margin-bottom:0; }
@@ -782,7 +805,11 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
 .pledge-card{
   padding:26px 30px; border-radius:22px; position:relative;
   margin-bottom:28px; max-width:760px;
+  display:flex; align-items:center; gap:28px;
 }
+/* Portrait stamped beside the promise, the way a signature sits on a document.
+   .pledge-card-rule is absolutely positioned, so it stays out of this flex row. */
+.pledge-mark{ height:200px; width:auto; flex:none; }
 .pledge-card-rule{
   position:absolute; left:0; top:22px; bottom:22px; width:3px; border-radius:3px;
   background:linear-gradient(180deg,var(--green),var(--red));
@@ -1265,6 +1292,8 @@ h3{ font-size:clamp(21px,2.4vw,27px); letter-spacing:-.028em; line-height:1.26; 
   .tri-seg{ display:flex; align-items:baseline; gap:12px; }
   .tri-no{ margin-bottom:0; }
   .kakepami{ right:8px; top:14px; font-size:12.5px; padding:9px 16px; }
+  .pledge-card{ flex-direction:column; align-items:flex-start; gap:18px; }
+  .pledge-mark{ height:150px; }
   .footer{ padding:64px 0 36px; }
 }
 
