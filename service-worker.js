@@ -11,8 +11,8 @@
    that is what forces old caches to be dropped on the next visit.
    ============================================================ */
 
-const SHELL_CACHE = 'djagbletey-shell-v2';
-const RUNTIME_CACHE = 'djagbletey-runtime-v2';
+const SHELL_CACHE = 'djagbletey-shell-v3';
+const RUNTIME_CACHE = 'djagbletey-runtime-v3';
 
 /* The minimum needed to render something offline: markup, styles,
    behaviour, the manifest, and the one image (the seal) that appears
@@ -29,6 +29,17 @@ const SHELL_FILES = [
   './images/seal.jpg',
   './images/icons/icon-192.png'
 ];
+
+/* caches.match() searches caches in creation order, and SHELL_CACHE is always
+   created first — so a shell file refreshed into RUNTIME_CACHE would never be
+   read back, and styles.css / app.js would stay frozen at whatever shipped
+   when this SHELL_CACHE version was installed. Refresh each file back into the
+   cache it actually lives in. */
+const SHELL_URLS = new Set(SHELL_FILES.map((f) => new URL(f, self.location.href).href));
+
+function cacheFor(request) {
+  return SHELL_URLS.has(request.url) ? SHELL_CACHE : RUNTIME_CACHE;
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -87,7 +98,7 @@ self.addEventListener('fetch', (event) => {
         .then((response) => {
           if (response && response.ok) {
             const copy = response.clone();
-            caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy));
+            caches.open(cacheFor(request)).then((cache) => cache.put(request, copy));
           }
           return response;
         })
